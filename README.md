@@ -18,7 +18,7 @@ We follow a structured git workflow:
 
 ## Commands used
 Git Basics:
- - git init - Initialize repository
+ - git init - Initialise repository
  - git add - Stage files
  - git commit -m "message" - Save checkpoint
  - git status - Check current state
@@ -33,12 +33,14 @@ Branching Workflow:
 Remote (GitHub):
  - git remote add origin URL - Connect to GitHub
  - git push -u origin branch - Upload to GitHub
- - Set up Personal Access Token for authentication
+
+Authentication
+ - Set up Personal Access Token for password authentication
 
 ## Author
 pinkton/Claude AI
 
 ## Abuse
-This relies on the usage of Claude to tell me actions/commands. 
-The files that are uploaded are typically the work of AI, though my intention is to highlight AI files with a prepended AI-*.(ext) to help delineate between my work and Claude created work. 
+This relies on the usage of Claude Code to tell me actions/commands and help me learn and develop. 
+Any files that are uploaded typically the work of AI, is to highlight with a prepended 'AI-' to help delineate between my work and Claude created work. 
 Please reach out to me for any disputes, I'm learning!

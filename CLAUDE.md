@@ -9,7 +9,7 @@
 - Metric units where applicable
 
 ## Public Repository Notice
-This repository is **publicly accessible** on GitHub at: https://github.com/pinkton/Claude-Teach-Me-Github
+This repository is **publicly accessible** on GitHub at: https://github.com/pinkton/Claude-Teach-Me
 - Do not include sensitive information
 - User is learning and documenting the process publicly
 - AI-generated files are prefixed with `AI-*` to distinguish from user-created work

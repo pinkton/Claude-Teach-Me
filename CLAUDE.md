@@ -17,37 +17,52 @@ This repository is **publicly accessible** on GitHub at: https://github.com/pink
 ## Project Purpose
 This is a **learning repository** for understanding git workflow and programming fundamentals.
 
-The user (pinkton) is learning:
-- Proper git branch workflow (main → develop → feature branches)
-- Programming basics
-- Eventually: Creating game modding tools for legacy games with limited modern support
+**Learning Path (in order):**
+1. **Git Workflow** ← Currently here (completed)
+2. **Programming Fundamentals** ← Next step
+3. **Game Modding Tools** ← Long-term goal (many steps away)
 
-## Current State
-- [x] Repository initialised with proper branch structure
-- [x] Completed git workflow tutorial with practical exercises
-- [x] Successfully connected to GitHub with credential storage
-- [x] Created practice Python scripts (hello.py, goodbye.py)
-- [ ] Ready to begin programming fundamentals
-- [ ] Not yet started actual game modding project
+The ultimate goal is creating tools for legacy game modifications, but mastering fundamentals comes first.
+
+## Teaching Methodology for Future Claude Sessions
+**IMPORTANT - How to teach the user:**
+1. **Guide, don't do** - Tell the user what commands to run, don't execute for them (unless explicitly requested)
+2. **Ask questions constantly** - Before and after each step to reinforce learning
+3. **Test knowledge periodically** - Every 3-4 commands, ask: "What will this command do?" or "Why are we doing this?"
+4. **Encourage independent thinking** - Ask which approach they'd choose before suggesting one
+5. **Build on previous lessons** - Reference earlier concepts to reinforce connections
+6. **Let them make mistakes** - If they suggest the wrong command, ask guiding questions rather than immediately correcting
+
+## Current Progress
+
+### Git Workflow - COMPLETED ✓
+- [x] Repository setup and configuration
+- [x] Branch workflow (main → develop → feature)
+- [x] Creating and switching branches
+- [x] Committing changes with meaningful messages
+- [x] Merging feature branches through develop to main
+- [x] Pushing to GitHub with authentication
+- [x] Handling divergent branches with git pull
+- [x] Understanding when to use proper workflow vs direct commits
+
+### Programming Fundamentals - NOT STARTED
+- [ ] Variables and data types
+- [ ] Control flow (if/else, loops)
+- [ ] Functions and modules
+- [ ] File operations
+- [ ] Error handling
+- [ ] Object-oriented basics
+
+### Game Modding Tools - FUTURE GOAL
+- [ ] Understanding game file formats
+- [ ] Binary file manipulation
+- [ ] Creating user-friendly tools
+- (Many prerequisite steps needed first)
 
 ## Branch Strategy
 - **main**: Production-ready, stable code only (never push broken code here)
 - **develop**: Integration branch for testing features before production
 - **feature/[name]**: Individual feature branches for isolated development
-
-## Completed Work
-- [x] Set up git repository
-- [x] Configure git identity (username: pinkton, GitHub private email)
-- [x] Complete git workflow tutorial
-- [x] Create feature/helloworld branch with hello.py
-- [x] Create feature/goodbye branch with goodbye.py
-- [x] Successfully merge features through develop to main
-- [x] Push all branches to GitHub
-- [x] Set up credential storage for GitHub authentication
-- [x] Handle divergent branches (local vs remote changes)
-- [x] Learn git pull to sync remote changes before pushing
-- [ ] Begin programming fundamentals
-- [ ] Start game modding toolkit project
 
 ## Git Workflow Mastered
 The user has successfully completed the full professional workflow:
@@ -69,10 +84,18 @@ Key commands learned:
 - Solution: `git pull origin main` to merge remote changes, then push
 - Lesson: Always pull before pushing to avoid conflicts
 
-## Notes for Future Sessions
-When continuing this project, check:
-1. Current branch with `git branch`
-2. Uncommitted changes with `git status`
-3. This file for context on what we're working on
-4. The user prefers to execute commands themselves for learning (guide, don't do)
-5. Always ask questions to reinforce understanding
+## Session Start Checklist for Future Claude
+When resuming this project:
+1. Read this entire file to understand context
+2. Check current branch: `git branch`
+3. Check for uncommitted changes: `git status`
+4. Ask the user what they want to work on today
+5. **Test previous knowledge** - Ask 1-2 questions about the last session's concepts before starting new material
+6. Follow the teaching methodology above
+
+## Knowledge Testing Examples
+Periodically ask questions like:
+- "What branch should we create this feature from?"
+- "What will `git status` show us right now?"
+- "Why do we merge to develop before main?"
+- "What's the difference between `git add` and `git commit`?"

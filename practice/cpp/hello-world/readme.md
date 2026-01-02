@@ -4,6 +4,6 @@ This file "helloworld" is a simple CPP program, that prints the typical "Hello W
 ## How I've built it, and what it outputs
 g++ -S -masm=intel helloworld.cpp = ASM file output in Intel (GCC by default does AT&T, weird)
 
-g++ -masm=intel helloworld.cpp = Intel ELF file
+g++ -masm=intel helloworld.cpp -o helloworld = Intel ELF file
 
 Nothing fancy, but hey, everyone starts somewhere.

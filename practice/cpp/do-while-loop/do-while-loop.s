@@ -1,181 +1,180 @@
-	.file	"if_greater_smaller.cpp"
-	.intel_syntax noprefix
+	.file	"do-while-loop.cpp"
 	.text
-	.local	_ZStL8__ioinit
-	.comm	_ZStL8__ioinit,1,1
+#APP
+	.globl _ZSt21ios_base_library_initv
 	.section	.rodata
 	.align 8
 .LC0:
-	.string	"Please enter a number from 0 - 20:"
-.LC1:
-	.string	"Number is greater than 10"
-.LC2:
-	.string	"Number is less than 10"
-.LC3:
-	.string	"Number is exactly 10"
+	.string	"Please enter a number from 0 - 20, or -1 to quit:"
 	.align 8
+.LC1:
+	.string	"Invalid input! Please enter a number."
+.LC2:
+	.string	"Number is greater than 10"
+.LC3:
+	.string	"Number is less than 10"
 .LC4:
-	.string	"Number is not within parameters, or is not a number, try again"
+	.string	"Number is exactly 10"
+.LC5:
+	.string	"Invalid number"
+.LC6:
+	.string	"Quitting!"
+#NO_APP
 	.text
 	.globl	main
 	.type	main, @function
 main:
-.LFB1731:
+.LFB1988:
 	.cfi_startproc
 	endbr64
-	push	rbp
+	pushq	%rbp
 	.cfi_def_cfa_offset 16
 	.cfi_offset 6, -16
-	mov	rbp, rsp
+	movq	%rsp, %rbp
 	.cfi_def_cfa_register 6
-	sub	rsp, 16
-	mov	rax, QWORD PTR fs:40
-	mov	QWORD PTR -8[rbp], rax
-	xor	eax, eax
-	lea	rax, .LC0[rip]
-	mov	rsi, rax
-	lea	rax, _ZSt4cout[rip]
-	mov	rdi, rax
+	subq	$16, %rsp
+	movq	%fs:40, %rax
+	movq	%rax, -8(%rbp)
+	xorl	%eax, %eax
+.L9:
+	leaq	.LC0(%rip), %rax
+	movq	%rax, %rsi
+	leaq	_ZSt4cout(%rip), %rax
+	movq	%rax, %rdi
 	call	_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc@PLT
-	mov	rdx, QWORD PTR _ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_@GOTPCREL[rip]
-	mov	rsi, rdx
-	mov	rdi, rax
+	movq	_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_@GOTPCREL(%rip), %rdx
+	movq	%rdx, %rsi
+	movq	%rax, %rdi
 	call	_ZNSolsEPFRSoS_E@PLT
-	lea	rax, -12[rbp]
-	mov	rsi, rax
-	lea	rax, _ZSt3cin[rip]
-	mov	rdi, rax
+	leaq	-12(%rbp), %rax
+	movq	%rax, %rsi
+	leaq	_ZSt3cin(%rip), %rax
+	movq	%rax, %rdi
 	call	_ZNSirsERi@PLT
-	mov	eax, DWORD PTR -12[rbp]
-	cmp	eax, 10
-	jle	.L2
-	mov	eax, DWORD PTR -12[rbp]
-	cmp	eax, 20
-	jg	.L2
-	lea	rax, .LC1[rip]
-	mov	rsi, rax
-	lea	rax, _ZSt4cout[rip]
-	mov	rdi, rax
+	movl	-12(%rbp), %eax
+	cmpl	$-1, %eax
+	je	.L13
+	leaq	16+_ZSt3cin(%rip), %rax
+	movq	%rax, %rdi
+	call	_ZNKSt9basic_iosIcSt11char_traitsIcEE4failEv@PLT
+	testb	%al, %al
+	je	.L4
+	movl	$0, %esi
+	leaq	16+_ZSt3cin(%rip), %rax
+	movq	%rax, %rdi
+	call	_ZNSt9basic_iosIcSt11char_traitsIcEE5clearESt12_Ios_Iostate@PLT
+	movl	$10, %edx
+	movl	$100, %esi
+	leaq	_ZSt3cin(%rip), %rax
+	movq	%rax, %rdi
+	call	_ZNSi6ignoreEli@PLT
+	leaq	.LC1(%rip), %rax
+	movq	%rax, %rsi
+	leaq	_ZSt4cout(%rip), %rax
+	movq	%rax, %rdi
 	call	_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc@PLT
-	mov	rdx, QWORD PTR _ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_@GOTPCREL[rip]
-	mov	rsi, rdx
-	mov	rdi, rax
+	movq	_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_@GOTPCREL(%rip), %rdx
+	movq	%rdx, %rsi
+	movq	%rax, %rdi
 	call	_ZNSolsEPFRSoS_E@PLT
-	jmp	.L3
-.L2:
-	mov	eax, DWORD PTR -12[rbp]
-	cmp	eax, 9
-	jg	.L4
-	mov	eax, DWORD PTR -12[rbp]
-	test	eax, eax
-	js	.L4
-	lea	rax, .LC2[rip]
-	mov	rsi, rax
-	lea	rax, _ZSt4cout[rip]
-	mov	rdi, rax
-	call	_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc@PLT
-	mov	rdx, QWORD PTR _ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_@GOTPCREL[rip]
-	mov	rsi, rdx
-	mov	rdi, rax
-	call	_ZNSolsEPFRSoS_E@PLT
-	jmp	.L3
+	jmp	.L5
 .L4:
-	mov	eax, DWORD PTR -12[rbp]
-	cmp	eax, 10
-	jne	.L5
-	lea	rax, .LC3[rip]
-	mov	rsi, rax
-	lea	rax, _ZSt4cout[rip]
-	mov	rdi, rax
+	movl	-12(%rbp), %eax
+	cmpl	$10, %eax
+	jle	.L6
+	movl	-12(%rbp), %eax
+	cmpl	$20, %eax
+	jg	.L6
+	leaq	.LC2(%rip), %rax
+	movq	%rax, %rsi
+	leaq	_ZSt4cout(%rip), %rax
+	movq	%rax, %rdi
 	call	_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc@PLT
-	mov	rdx, QWORD PTR _ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_@GOTPCREL[rip]
-	mov	rsi, rdx
-	mov	rdi, rax
+	movq	_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_@GOTPCREL(%rip), %rdx
+	movq	%rdx, %rsi
+	movq	%rax, %rdi
 	call	_ZNSolsEPFRSoS_E@PLT
-	jmp	.L3
-.L5:
-	lea	rax, .LC4[rip]
-	mov	rsi, rax
-	lea	rax, _ZSt4cout[rip]
-	mov	rdi, rax
+	jmp	.L5
+.L6:
+	movl	-12(%rbp), %eax
+	cmpl	$9, %eax
+	jg	.L7
+	movl	-12(%rbp), %eax
+	testl	%eax, %eax
+	js	.L7
+	leaq	.LC3(%rip), %rax
+	movq	%rax, %rsi
+	leaq	_ZSt4cout(%rip), %rax
+	movq	%rax, %rdi
 	call	_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc@PLT
-	mov	rdx, QWORD PTR _ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_@GOTPCREL[rip]
-	mov	rsi, rdx
-	mov	rdi, rax
+	movq	_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_@GOTPCREL(%rip), %rdx
+	movq	%rdx, %rsi
+	movq	%rax, %rdi
 	call	_ZNSolsEPFRSoS_E@PLT
-	call	main
-.L3:
-	mov	eax, 0
-	mov	rdx, QWORD PTR -8[rbp]
-	sub	rdx, QWORD PTR fs:40
-	je	.L7
-	call	__stack_chk_fail@PLT
+	jmp	.L5
 .L7:
-	leave
-	.cfi_def_cfa 7, 8
-	ret
-	.cfi_endproc
-.LFE1731:
-	.size	main, .-main
-	.type	_Z41__static_initialization_and_destruction_0ii, @function
-_Z41__static_initialization_and_destruction_0ii:
-.LFB2234:
-	.cfi_startproc
-	endbr64
-	push	rbp
-	.cfi_def_cfa_offset 16
-	.cfi_offset 6, -16
-	mov	rbp, rsp
-	.cfi_def_cfa_register 6
-	sub	rsp, 16
-	mov	DWORD PTR -4[rbp], edi
-	mov	DWORD PTR -8[rbp], esi
-	cmp	DWORD PTR -4[rbp], 1
-	jne	.L10
-	cmp	DWORD PTR -8[rbp], 65535
-	jne	.L10
-	lea	rax, _ZStL8__ioinit[rip]
-	mov	rdi, rax
-	call	_ZNSt8ios_base4InitC1Ev@PLT
-	lea	rax, __dso_handle[rip]
-	mov	rdx, rax
-	lea	rax, _ZStL8__ioinit[rip]
-	mov	rsi, rax
-	mov	rax, QWORD PTR _ZNSt8ios_base4InitD1Ev@GOTPCREL[rip]
-	mov	rdi, rax
-	call	__cxa_atexit@PLT
-.L10:
+	movl	-12(%rbp), %eax
+	cmpl	$10, %eax
+	jne	.L8
+	leaq	.LC4(%rip), %rax
+	movq	%rax, %rsi
+	leaq	_ZSt4cout(%rip), %rax
+	movq	%rax, %rdi
+	call	_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc@PLT
+	movq	_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_@GOTPCREL(%rip), %rdx
+	movq	%rdx, %rsi
+	movq	%rax, %rdi
+	call	_ZNSolsEPFRSoS_E@PLT
+	jmp	.L9
+.L8:
+	leaq	.LC5(%rip), %rax
+	movq	%rax, %rsi
+	leaq	_ZSt4cout(%rip), %rax
+	movq	%rax, %rdi
+	call	_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc@PLT
+	movq	_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_@GOTPCREL(%rip), %rdx
+	movq	%rdx, %rsi
+	movq	%rax, %rdi
+	call	_ZNSolsEPFRSoS_E@PLT
+.L5:
+	jmp	.L9
+.L13:
 	nop
+	leaq	.LC6(%rip), %rax
+	movq	%rax, %rsi
+	leaq	_ZSt4cout(%rip), %rax
+	movq	%rax, %rdi
+	call	_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc@PLT
+	movq	_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_@GOTPCREL(%rip), %rdx
+	movq	%rdx, %rsi
+	movq	%rax, %rdi
+	call	_ZNSolsEPFRSoS_E@PLT
+	movl	$0, %eax
+	movq	-8(%rbp), %rdx
+	subq	%fs:40, %rdx
+	je	.L11
+	call	__stack_chk_fail@PLT
+.L11:
 	leave
 	.cfi_def_cfa 7, 8
 	ret
 	.cfi_endproc
-.LFE2234:
-	.size	_Z41__static_initialization_and_destruction_0ii, .-_Z41__static_initialization_and_destruction_0ii
-	.type	_GLOBAL__sub_I_main, @function
-_GLOBAL__sub_I_main:
-.LFB2235:
-	.cfi_startproc
-	endbr64
-	push	rbp
-	.cfi_def_cfa_offset 16
-	.cfi_offset 6, -16
-	mov	rbp, rsp
-	.cfi_def_cfa_register 6
-	mov	esi, 65535
-	mov	edi, 1
-	call	_Z41__static_initialization_and_destruction_0ii
-	pop	rbp
-	.cfi_def_cfa 7, 8
-	ret
-	.cfi_endproc
-.LFE2235:
-	.size	_GLOBAL__sub_I_main, .-_GLOBAL__sub_I_main
-	.section	.init_array,"aw"
-	.align 8
-	.quad	_GLOBAL__sub_I_main
-	.hidden	__dso_handle
-	.ident	"GCC: (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0"
+.LFE1988:
+	.size	main, .-main
+	.section	.rodata
+	.type	_ZNSt8__detail30__integer_to_chars_is_unsignedIjEE, @object
+	.size	_ZNSt8__detail30__integer_to_chars_is_unsignedIjEE, 1
+_ZNSt8__detail30__integer_to_chars_is_unsignedIjEE:
+	.byte	1
+	.type	_ZNSt8__detail30__integer_to_chars_is_unsignedImEE, @object
+	.size	_ZNSt8__detail30__integer_to_chars_is_unsignedImEE, 1
+_ZNSt8__detail30__integer_to_chars_is_unsignedImEE:
+	.byte	1
+	.type	_ZNSt8__detail30__integer_to_chars_is_unsignedIyEE, @object
+	.size	_ZNSt8__detail30__integer_to_chars_is_unsignedIyEE, 1
+_ZNSt8__detail30__integer_to_chars_is_unsignedIyEE:
+	.byte	1
+	.ident	"GCC: (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0"
 	.section	.note.GNU-stack,"",@progbits
 	.section	.note.gnu.property,"a"
 	.align 8

@@ -1,11 +1,13 @@
 ## What is it
-This file "if-greater-smaller" is a simple CPP program, that asks the user for integer input between 0 and 20, outputting whether it is larger, smaller or exactly of 10.
+This file "for-loop" demonstrates for loops in C++. Three different examples showing different for loop patterns:
 
-Currently, works with numbers but don't get crazy inputting weird things like letters, you'll get weird results?
+1. Counting forwards from 1 to 20 - standard increment (`i++`)
+2. Counting backwards from 10 to 0 - decrement (`i--`)
+3. Counting in steps of 2 from 0 to 20 - custom increment (`i+=2`)
 
-NB Letters are less than 10.
+Good practice for understanding the three parts of a for loop: initialization, condition, and update. Also learned the difference between `i+=2` (add 2 to i) vs `i=+2` (assign positive 2 to i) - caught that bug during development.
 
 ## How I've built it, and what it outputs
-g++ -S -masm=intel if-greater-smaller.cpp = ASM file output
+g++ -S -masm=intel for-loop.cpp = ASM file output
 
-g++ -masm=intel if-greater-smaller.cpp -o add-two-numbers = Intel ELF file
+g++ -masm=intel for-loop.cpp -o for-loop = Intel ELF file

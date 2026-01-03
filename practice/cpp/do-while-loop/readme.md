@@ -3,7 +3,7 @@ This file "do-while-loop" is a CPP program that demonstrates do-while loops. It 
 
 Key difference from the while loop version - this uses `do {...} while (condition)` instead of `while (condition) {...}`. Practically the same result when using `while (true)` with `break`, but good to understand both syntaxes.
 
-Also includes proper input validation using `std::cin.fail()`, `std::cin.clear()`, and `std::cin.ignore()` - so typing letters or symbols doesn't break it anymore. It'll just tell you off and ask again.
+Also includes proper input validation using `std::cin.fail()`, `std::cin.clear()`, and `std::cin.ignore()` - so typing letters or symbols doesn't break it any more. It'll just tell you off and ask again.
 
 Enter -1 to quit.
 

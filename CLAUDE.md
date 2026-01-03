@@ -13,9 +13,11 @@ This repository is **publicly accessible** on GitHub at: https://github.com/pink
 - Do not include sensitive information
 - User is learning and documenting the process publicly
 - AI-generated files are prefixed with `AI-*` to distinguish from user-created work
+- Work created then updated is a grey area, but user understands that they create their own files first, then get Claude to provide context and provide rewording based on pre-existing user created content, opposed to halucinating from nothingness.
 
 ## Project Purpose
 This is a **learning repository** for developing C/C++ skills to create game modification tools, specifically targeting legacy games that struggle on modern operating systems or have abandoned features.
+Every training session is to be it's own folder to some degree, allowing public visibility into what has/hasn't been achieved, and they can see an element of notes/examples for revision at later dates. 
 
 **Current Target:** [This Means Warp](https://store.steampowered.com/app/1269300/This_Means_Warp/) - Roguelike space game with an unreliable multiplayer save system.
 
@@ -26,7 +28,7 @@ This is a **learning repository** for developing C/C++ skills to create game mod
 **Existing Skills:**
 - **GIAC GREM certified** - Professional reverse engineering of malware
 - **Reverse engineering tools:** Ghidra, IDA Pro, x64dbg (experienced)
-- **CTF experience** - Capture The Flag challenges (4 years ago, but foundational knowledge intact)
+- **CTF experience** - Capture The Flag challenges (Multiple years of simple challenges, but foundational knowledge intact)
 - **Binary analysis:** Comfortable reading assembly, understanding PE format, tracing execution
 - **Scripting:** Python and PowerShell (day job usage)
 - **Conceptual understanding:** Variables, loops, functions, control flow (high-level concepts)
@@ -39,18 +41,19 @@ This is a **learning repository** for developing C/C++ skills to create game mod
   - Game RE: "Look for functional patterns" (feature hunting)
   - Need to find UI code, save systems, game logic (not IOCs or suspicious APIs)
 - **Creating user-facing tools** - Not just analysis, but building tools others can use
-- **Memory management from developer perspective** - Allocating and manipulating, not just analyzing
+- **Memory management from developer perspective** - Allocating and manipulating, not just analysing
 
 **Critical Insight:**
-User can **analyze** code but needs to learn to **write** code. Shift from "reverse engineering analyst" to "game modding developer."
+User can **analyse** code but needs to learn to **write** code. Shift from "reverse engineering analyst" to "game modding developer."
 
 ## Learning Path (Updated)
 
 **Learning Path (in order):**
 1. **Git Workflow** - COMPLETED
 2. **C/C++ Development** - IN PROGRESS (current focus)
-3. **Game-Specific Reverse Engineering** - UPCOMING
-4. **Building the This Means Warp Mod** - FUTURE
+3. **Windows Internals & DLL Development** - UPCOMING (transferable to any Windows application)
+4. **Game RE Fundamentals** - UPCOMING (practice on UT99 as training target)
+5. **Building the This Means Warp Mod** - FUTURE (ultimate goal, subject to change)
 
 ### 1. Git Workflow - COMPLETED
 - [x] Repository setup and configuration
@@ -73,35 +76,57 @@ User can **analyze** code but needs to learn to **write** code. Shift from "reve
 - [x] Functions with parameters and return values (`practice/cpp/add-two-numbers/add-two-numbers.cpp`)
 - [x] Understanding x86-64 calling conventions (EDI, ESI for params; EAX for return)
 - [x] User input with `std::cin >>`
-- [x] If/else statements and conditional logic (`practice/cpp/if-number-loop/if_greater_smaller.cpp`)
+- [x] If/else statements and conditional logic (`practice/cpp/if-number-loop/if-greater-smaller.cpp`)
 - [x] Key bug discovered: `=` (assignment) vs `==` (comparison) - caught and fixed
-- [ ] Loops (while, for, do-while) - NEXT TASK
-- [ ] Input validation (checking `std::cin.fail()`, clearing errors)
+- [x] Loops - all three types mastered:
+  - [x] `while` loops - condition checked first (`practice/cpp/if-number-loop/if-greater-smaller.cpp`)
+  - [x] `do-while` loops - condition checked after, guaranteed one execution (`practice/cpp/do-while-loop/do-while-loop.cpp`)
+  - [x] `for` loops - best for counting/iteration with init, condition, update (`practice/cpp/for-loop/for-loop.cpp`)
+- [x] Loop control - `break` to exit, `continue` to skip to next iteration
+- [x] Input validation - `std::cin.fail()` to detect errors, `std::cin.clear()` to reset, `std::cin.ignore()` to flush buffer
+- [x] String concatenation in output - chaining `<<` operators instead of `+` for mixed types
 - [ ] Memory management (pointers, heap/stack from developer view)
 - [ ] Creating DLLs and understanding linking
 - [ ] Build systems (Makefiles, CMake, or similar)
 - [ ] Debugging C/C++ code (not just binaries)
 
 **Key Learning Discovery:**
-User realized they can write C++ code, compile to assembly, and reverse engineer their own code to learn patterns. This creates a powerful learning loop: **write C++ → compile to assembly → analyze with RE skills → understand patterns → recognize in production software**.
+User realised they can write C++ code, compile to assembly, and reverse engineer their own code to learn patterns. This creates a powerful learning loop: **write C++ → compile to assembly → analyse with RE skills → understand patterns → recognise in production software**.
 
-### 3. Game-Specific Reverse Engineering - UPCOMING
-**Goal:** Shift from malware analysis to game modding methodology.
+### 3. Windows Internals & DLL Development - UPCOMING
+**Goal:** Learn transferable skills for modifying any Windows application.
 
-- [ ] Finding game features (not malicious code)
-  - Tracing user input → code path
-  - Finding strings → UI code
-  - Monitoring file I/O → save systems
-- [ ] Understanding save file formats
-  - Is it encrypted/seeded?
-  - Can it be copied?
-  - When can saves occur?
-- [ ] Instrumentation without breaking the game
-  - Hooking and logging safely
-  - Understanding game state
-- [ ] Finding UI elements and menu code
+- [ ] Pointers and memory management (heap vs stack, allocation)
+- [ ] Structs and custom data structures
+- [ ] File I/O (reading/writing files programmatically)
+- [ ] Building DLLs (shared libraries)
+- [ ] Understanding process memory layout
+- [ ] DLL injection techniques (CreateRemoteThread, AppInit_DLLs, etc.)
+- [ ] Windows API basics (kernel32, user32 functions)
+- [ ] PE file format understanding
 
-### 4. Building the This Means Warp Mod - FUTURE
+### 4. Game RE Fundamentals - UPCOMING
+**Goal:** Learn universal game modding techniques (using UT99 as practice target).
+
+**Practice Target:** Unreal Tournament 99
+- Chosen because: Large modding community, well-documented, simple by modern standards, no anti-tamper
+- Purpose: Safe environment to learn techniques that transfer to any game
+- Not the end goal, just a training dummy
+
+**Transferable Skills to Learn:**
+- [ ] Finding game state in memory (Cheat Engine techniques)
+- [ ] Identifying function signatures and patterns
+- [ ] Tracing execution flows without source code
+- [ ] Understanding game loops and update cycles
+- [ ] Function hooking (detours, trampolines)
+- [ ] Memory patching techniques
+- [ ] Finding strings → UI code → game logic
+- [ ] Save file format analysis
+- [ ] Instrumentation without crashing the application
+
+### 5. Building the This Means Warp Mod - FUTURE
+
+**Note:** This is the current ultimate goal, but may change as learning progresses and interests evolve. Skills learned are transferable to any game modding project.
 
 **Specific Questions to Answer:**
 1. How does the save system work?
@@ -112,7 +137,7 @@ User realized they can write C++ code, compile to assembly, and reverse engineer
 6. How to hook and log game behavior?
 
 **Implementation Steps:**
-- [ ] Analyze This Means Warp save system
+- [ ] Analyse This Means Warp save system
 - [ ] Create DLL injector/loader
 - [ ] Hook save system logic
 - [ ] Implement reliable save/load
@@ -192,12 +217,18 @@ When resuming this project:
 - "Why do we need calling conventions?" (interoperability between compiled code)
 - "What happens if `std::cin >>` fails when user enters invalid input?" (fail state, variable uninitialized)
 - "Should compiled binaries be committed to git?" (no - only source code)
+- "What's the difference between `while` and `do-while`?" (when condition is checked)
+- "When would you use a `for` loop vs a `while` loop?" (counting/iteration vs conditional repetition)
+- "What does `i++` do?" (increment i by 1, same as i = i + 1)
+- "What's the difference between `i+=2` and `i=+2`?" (add 2 to i vs assign positive 2 to i)
+- "How do you fix an infinite loop caused by `std::cin` failure?" (clear(), ignore(), then try again)
+- "What's the difference between `break` and `continue`?" (exit loop vs skip to next iteration)
 - "What's the difference between compiling and linking?" (upcoming)
 - "What's the difference between the stack and the heap?" (upcoming)
 
 **Game RE questions (future):**
 - "How would you find the save game code if you don't know where it is?"
-- "What's the difference between analyzing malware and analyzing game logic?"
+- "What's the difference between analysing malware and analysing game logic?"
 - "How can you hook a function without crashing the game?"
 
 ## Common Scenarios Encountered
@@ -237,9 +268,17 @@ When resuming this project:
         │   ├── helloworld.cpp          # First C++ program
         │   └── readme.md               # Notes on Hello World
         ├── add-two-numbers/
-        │   └── add-two-numbers.cpp     # Function with parameters/return
-        └── if-number-loop/
-            └── if_greater_smaller.cpp  # If/else and user input
+        │   ├── add-two-numbers.cpp     # Function with parameters/return
+        │   └── readme.md               # Notes on functions
+        ├── if-number-loop/
+        │   ├── if-greater-smaller.cpp  # While loop with input validation
+        │   └── readme.md               # Notes on while loops
+        ├── do-while-loop/
+        │   ├── do-while-loop.cpp       # Do-while loop example
+        │   └── readme.md               # Notes on do-while loops
+        └── for-loop/
+            ├── for-loop.cpp            # For loop counting examples
+            └── readme.md               # Notes on for loops
 ```
 
 ## Important Notes
@@ -254,22 +293,25 @@ When resuming this project:
 ## Next Session Goals
 
 **Immediate next steps:**
-1. **Clean up git repository** - Remove compiled outputs (`.s` files, binaries) that were mistakenly committed
-2. **Learn loops** - Implement while/for loops to handle repeated input validation
-3. **Input validation** - Handle `std::cin.fail()` when user enters invalid input (letters instead of numbers)
-4. **Combine concepts** - Create a robust number checker that loops until valid input received
+1. **Switch statements** - Another control flow mechanism for multiple conditions
+2. **Different data types** - char, float, string, bool, arrays
+3. **Nested loops** - Loops inside loops for more complex iteration patterns
+4. **More practice** - Combine loops with different data types
 
-**Current location in code:**
-- File: `practice/cpp/if-number-loop/if_greater_smaller.cpp`
-- Status: Has working if/else logic and user input, but uses recursive `main()` call (bad practice)
-- Need to replace recursive call with proper loop
+**Current progress:**
+- Completed all three loop types (while, do-while, for)
+- Completed input validation for handling non-numeric input
+- Understanding when to use each loop type based on use case
+- Three working example programs demonstrating different loop patterns
 
-**Upcoming tasks:**
+**Upcoming tasks (transferable skills focus):**
 1. More control flow practice (switch statements, nested loops)
 2. Different data types (char, float, string, bool, arrays)
-3. Build simple file I/O tool (reads/writes files)
-4. Learn pointers and memory management
-5. Eventually: Create first DLL and analyze This Means Warp
+3. Pointers and memory management (crucial for game modding)
+4. Build simple file I/O tool (reads/writes files - applicable to save file analysis)
+5. Create first DLL (transferable to any Windows application)
+6. Practice on UT99 (safe environment to apply skills)
+7. Eventually: Apply everything to This Means Warp (or whatever game interests you by then)
 
 ---
 

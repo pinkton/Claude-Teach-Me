@@ -85,6 +85,8 @@ User can **analyse** code but needs to learn to **write** code. Shift from "reve
 - [x] Loop control - `break` to exit, `continue` to skip to next iteration
 - [x] Input validation - `std::cin.fail()` to detect errors, `std::cin.clear()` to reset, `std::cin.ignore()` to flush buffer
 - [x] String concatenation in output - chaining `<<` operators instead of `+` for mixed types
+- [ ] Arrays - collections of values in contiguous memory, indexing, iteration (NEXT)
+- [ ] Pointers and pointer arithmetic - understanding memory addresses, array/pointer relationship
 - [ ] Memory management (pointers, heap/stack from developer view)
 - [ ] Creating DLLs and understanding linking
 - [ ] Build systems (Makefiles, CMake, or similar)
@@ -226,6 +228,13 @@ When resuming this project:
 - "What's the difference between compiling and linking?" (upcoming)
 - "What's the difference between the stack and the heap?" (upcoming)
 
+**Array questions (upcoming):**
+- "Why are arrays zero-indexed?"
+- "What happens if you access `array[10]` when the array size is 5?"
+- "How do you iterate over an array with a for loop?"
+- "What's the relationship between arrays and pointers?"
+- "How do you get the size of an array?"
+
 **Game RE questions (future):**
 - "How would you find the save game code if you don't know where it is?"
 - "What's the difference between analysing malware and analysing game logic?"
@@ -293,25 +302,37 @@ When resuming this project:
 ## Next Session Goals
 
 **Immediate next steps:**
-1. **Switch statements** - Another control flow mechanism for multiple conditions
-2. **Different data types** - char, float, string, bool, arrays
-3. **Nested loops** - Loops inside loops for more complex iteration patterns
-4. **More practice** - Combine loops with different data types
+1. **Arrays** - Collections of values in contiguous memory, the logical next step after loops
+   - Declaring and initialising arrays (`int numbers[5] = {1, 2, 3, 4, 5}`)
+   - Array indexing and zero-based indexing (`array[0]`)
+   - Iterating over arrays with for loops (combining loop knowledge with collections)
+   - Array bounds and undefined behaviour
+   - sizeof operator for getting array length
+   - Multi-dimensional arrays (`int grid[3][3]`) leading to nested loops
+2. **Pointers** - Understanding memory addresses and pointer arithmetic (natural follow-up to arrays)
+3. **Different data types** - char, float, string, bool (can introduce alongside arrays)
+4. **More practice** - Combine arrays, loops, and different data types
 
 **Current progress:**
 - Completed all three loop types (while, do-while, for)
 - Completed input validation for handling non-numeric input
 - Understanding when to use each loop type based on use case
 - Three working example programs demonstrating different loop patterns
+- Ready to bridge into memory concepts via arrays
+
+**Why arrays next:**
+- Builds on loop mastery (arrays give loops purpose)
+- Natural introduction to memory layout concepts
+- Bridge to pointers (arrays decay to pointers)
+- Essential for game modding (save files, inventories, packets are all arrays)
 
 **Upcoming tasks (transferable skills focus):**
-1. More control flow practice (switch statements, nested loops)
-2. Different data types (char, float, string, bool, arrays)
-3. Pointers and memory management (crucial for game modding)
-4. Build simple file I/O tool (reads/writes files - applicable to save file analysis)
-5. Create first DLL (transferable to any Windows application)
-6. Practice on UT99 (safe environment to apply skills)
-7. Eventually: Apply everything to This Means Warp (or whatever game interests you by then)
+1. Arrays and pointers - understand memory layout
+2. Structs and custom data structures
+3. Build simple file I/O tool (reads/writes files - applicable to save file analysis)
+4. Create first DLL (transferable to any Windows application)
+5. Practice on UT99 (safe environment to apply skills)
+6. Eventually: Apply everything to This Means Warp (or whatever game interests you by then)
 
 ---
 

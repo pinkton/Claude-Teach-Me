@@ -85,7 +85,13 @@ User can **analyse** code but needs to learn to **write** code. Shift from "reve
 - [x] Loop control - `break` to exit, `continue` to skip to next iteration
 - [x] Input validation - `std::cin.fail()` to detect errors, `std::cin.clear()` to reset, `std::cin.ignore()` to flush buffer
 - [x] String concatenation in output - chaining `<<` operators instead of `+` for mixed types
-- [ ] Arrays - collections of values in contiguous memory, indexing, iteration (NEXT)
+- [x] Arrays - fundamentals completed (`practice/cpp/arrays/arrays.cpp`):
+  - [x] Declaration and initialisation (`int numbers[5] = {1, 2, 4, 8, 16}`)
+  - [x] Zero-based indexing - valid indices 0 to N-1
+  - [x] Memory layout - contiguous blocks, 4-byte spacing for int arrays
+  - [x] Iteration with for loops
+  - [x] Out-of-bounds access and undefined behaviour - intentionally triggered to see garbage stack values
+  - [ ] sizeof operator for calculating array length (NEXT - resume next session)
 - [ ] Pointers and pointer arithmetic - understanding memory addresses, array/pointer relationship
 - [ ] Memory management (pointers, heap/stack from developer view)
 - [ ] Creating DLLs and understanding linking
@@ -285,9 +291,12 @@ When resuming this project:
         ├── do-while-loop/
         │   ├── do-while-loop.cpp       # Do-while loop example
         │   └── readme.md               # Notes on do-while loops
-        └── for-loop/
-            ├── for-loop.cpp            # For loop counting examples
-            └── readme.md               # Notes on for loops
+        ├── for-loop/
+        │   ├── for-loop.cpp            # For loop counting examples
+        │   └── readme.md               # Notes on for loops
+        └── arrays/
+            ├── arrays.cpp              # Array fundamentals and undefined behaviour
+            └── readme.md               # Notes on arrays
 ```
 
 ## Important Notes
@@ -302,29 +311,29 @@ When resuming this project:
 ## Next Session Goals
 
 **Immediate next steps:**
-1. **Arrays** - Collections of values in contiguous memory, the logical next step after loops
-   - Declaring and initialising arrays (`int numbers[5] = {1, 2, 3, 4, 5}`)
-   - Array indexing and zero-based indexing (`array[0]`)
-   - Iterating over arrays with for loops (combining loop knowledge with collections)
-   - Array bounds and undefined behaviour
-   - sizeof operator for getting array length
-   - Multi-dimensional arrays (`int grid[3][3]`) leading to nested loops
+1. **Arrays - sizeof operator** - Resume from where we left off
+   - **Question to answer:** What will `sizeof(numbers)`, `sizeof(int)`, and `sizeof(numbers)/sizeof(int)` return?
+   - Understanding why `sizeof(array)` gives total bytes, not element count
+   - Calculating array length programmatically: `sizeof(numbers) / sizeof(numbers[0])`
+   - Using calculated length in for loops instead of hardcoding `i < 5`
+   - Multi-dimensional arrays (`int grid[3][3]`) if time allows
 2. **Pointers** - Understanding memory addresses and pointer arithmetic (natural follow-up to arrays)
-3. **Different data types** - char, float, string, bool (can introduce alongside arrays)
+3. **Different data types** - char, float, string, bool (can introduce alongside arrays/pointers)
 4. **More practice** - Combine arrays, loops, and different data types
 
 **Current progress:**
 - Completed all three loop types (while, do-while, for)
 - Completed input validation for handling non-numeric input
-- Understanding when to use each loop type based on use case
-- Three working example programs demonstrating different loop patterns
-- Ready to bridge into memory concepts via arrays
+- **Completed array fundamentals** - declaration, zero-indexing, memory layout, iteration, undefined behaviour
+- Examined contiguous memory layout in assembly (4-byte spacing for int arrays)
+- Intentionally triggered out-of-bounds access to observe undefined behaviour
+- One working array program demonstrating basics
+- **Next:** sizeof operator to avoid hardcoding array length
 
-**Why arrays next:**
-- Builds on loop mastery (arrays give loops purpose)
-- Natural introduction to memory layout concepts
-- Bridge to pointers (arrays decay to pointers)
-- Essential for game modding (save files, inventories, packets are all arrays)
+**Why sizeof matters:**
+- Makes code more maintainable (change array size once, loops update automatically)
+- Essential for understanding how C++ views arrays vs pointers
+- Leads naturally into pointer arithmetic and array/pointer relationship
 
 **Upcoming tasks (transferable skills focus):**
 1. Arrays and pointers - understand memory layout

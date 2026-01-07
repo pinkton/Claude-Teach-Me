@@ -214,13 +214,13 @@ The user has custom bash functions configured in `~/.bashrc`:
 ## Session Start Checklist for Future Claude
 
 When resuming this project:
-1. Read this entire file to understand context
-2. **Remember:** User is GREM certified with RE experience - don't explain basic RE concepts
-3. **Focus:** User needs to learn C/C++ development, not reverse engineering
-4. Check current branch: `git branch`
-5. Check for uncommitted changes: `git status`
-6. Ask the user what they want to work on today
-7. **Test previous knowledge** - Ask 1-2 questions about the last session's concepts before starting new material
+1. Read this entire file to understand context and methodology
+2. **Read PROGRESS.md** - Check current session status, where we left off, and what's next
+3. **Remember:** User is GREM certified with RE experience - don't explain basic RE concepts
+4. **Focus:** User needs to learn C/C++ development, not reverse engineering
+5. Check current branch: `git branch`
+6. Check for uncommitted changes: `git status`
+7. **Test previous knowledge** - Ask 1-2 questions about the last session's concepts before starting new material (PROGRESS.md has suggested questions)
 8. Follow the teaching methodology above
 
 ## Knowledge Testing Examples

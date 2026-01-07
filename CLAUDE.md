@@ -197,6 +197,20 @@ Key commands mastered:
 - `git pull origin branch` - Download and merge remote changes
 - `git config credential.helper store` - Save authentication
 
+## User's Bash Shortcuts
+
+The user has custom bash functions configured in `~/.bashrc`:
+
+**compile-asm filename.cpp**
+- Compiles C++ to both executable and Intel-syntax assembly
+- User created this to quickly analyse their own compiled code
+- When suggesting compilation, you can reference this shortcut
+
+**gitpush "commit message"**
+- Combines `git add -A`, `git commit -m`, and `git push origin main`
+- Streamlined workflow for solo work on main branch
+- User may use this instead of individual git commands
+
 ## Session Start Checklist for Future Claude
 
 When resuming this project:

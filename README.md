@@ -91,6 +91,35 @@ feature/name → develop → main
    (work)      (test)  (production)
 ```
 
+## Bash Shortcuts
+
+Custom bash functions added to `~/.bashrc` to streamline common development tasks:
+
+### compile-asm
+Compiles C++ source to both executable and Intel-syntax assembly in one command:
+```bash
+compile-asm filename.cpp
+```
+
+This runs:
+- `g++ -masm=intel filename.cpp -o filename` (creates executable)
+- `g++ -S -masm=intel filename.cpp` (generates assembly file)
+
+**Use case:** Quickly compile and generate assembly for reverse engineering analysis of your own code.
+
+### gitpush
+Stages, commits, and pushes changes to main in one command:
+```bash
+gitpush "your commit message"
+```
+
+This runs:
+- `git add -A` (stages all changes)
+- `git commit -m "message"` (commits with message)
+- `git push origin main` (pushes to remote)
+
+**Use case:** Streamlined workflow for quick commits when working solo on main branch.
+
 ## Teaching Methodology
 
 This repository uses Claude Code as an interactive teacher. The learning approach:

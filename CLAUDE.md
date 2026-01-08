@@ -338,33 +338,39 @@ gitpush() {
 ## Next Session Goals
 
 **Immediate next steps:**
-1. **Different data types** — `char*` pointers and strings, see how pointer arithmetic changes with different sizes
-2. **Structs** — Custom data structures (foundation for understanding game objects in memory)
+1. **Structs** — Custom data structures
+   - Define a struct (e.g., `Player` with health, x, y)
+   - Access members with `.` operator
+   - Pointers to structs and `->` operator
+   - Calculate offsets within structs (directly relevant to game modding)
+2. **Memory layout of structs** — How members are arranged contiguously
 3. **Memory management** — Heap vs stack from developer perspective
 
-**Current progress:**
-- Completed pointer fundamentals (address-of, dereference, declaration)
-- Proved array/pointer equivalence (`scores` == `&scores[0]`)
-- Proved indexing is pointer arithmetic (`scores[2]` == `*(scores + 2)`)
-- Implemented both iteration patterns: `*(p + i)` and `p++`
-- Modifying values through pointers (`*target = 999`)
-- Understood declaration (`int* p`) vs expression (`*p`) context for `*`
-- Clarified references (`int&`) vs pointers (`int*`) — pointers needed for modding work
-- **Key insight gained** — ASLR randomises base addresses but offsets stay constant; game modding is about finding stable offsets
+**Current progress — Pointers COMPLETE:**
+- Declaration, dereferencing, address-of
+- Array/pointer equivalence (`scores` == `&scores[0]`)
+- Indexing is pointer arithmetic (`scores[2]` == `*(scores + 2)`)
+- Both iteration patterns: `*(p + i)` and `p++`
+- Modification through pointers (`*target = 999`)
+- Declaration (`int* p`) vs expression (`*p`) context
+- References (`int&`) vs pointers (`int*`)
+- Different type sizes (`int*` = 4 bytes, `char*` = 1 byte)
+- ASLR and offsets conceptual understanding
+- Hex offset calculation practice
 
-**Why reinforcement matters:**
-- Years of high-level programming create strong mental models
-- Low-level pointer reality is counterintuitive at first
-- Repeated varied exercises build new neural pathways
-- Essential foundation for memory manipulation in game modding
+**Key insights from pointers:**
+- Application developers work with abstractions (`player.health`)
+- Modders/RE work with raw memory (`base_address + 0x4A8`)
+- ASLR randomises base addresses but offsets stay constant
+- Game updates break mods because offsets shift
 
 **Upcoming tasks (transferable skills focus):**
-1. Different data types and pointer arithmetic (next)
-2. Structs and custom data structures
-3. Build simple file I/O tool (reads/writes files - applicable to save file analysis)
-4. Create first DLL (transferable to any Windows application)
-5. Practice on UT99 (safe environment to apply skills)
-6. Eventually: Apply everything to This Means Warp (or whatever game interests you by then)
+1. Structs and custom data structures (NEXT)
+2. Memory layout and offset calculation
+3. Build simple file I/O tool
+4. Create first DLL
+5. Practice on UT99
+6. Apply to This Means Warp
 
 ---
 

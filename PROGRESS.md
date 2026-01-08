@@ -14,18 +14,12 @@ This file tracks session-by-session progress. See CLAUDE.md for methodology and 
 - Pointer arithmetic iteration
 - Modifying values through pointers
 - ASLR and offsets conceptual discussion
+- Different data types (`char*` vs `int*`)
 
 ### What Was Completed Today
 
 **1. Pointer Fundamentals - VERIFIED**
 - Confirmed dereference operator works: `*ptr` outputs `42`
-- Full output verified:
-  ```
-  Value of num: 42
-  Address of num: 0x7ffd08750ca4
-  Value stored in ptr: 0x7ffd08750ca4
-  Value pointed to by ptr: 42
-  ```
 
 **2. Arrays ARE Pointers - COMPLETED**
 - Proved `scores` and `&scores[0]` output identical addresses
@@ -45,14 +39,10 @@ This file tracks session-by-session progress. See CLAUDE.md for methodology and 
 - User has years of high-level thinking: "array[i] points to a value"
 - Low-level reality: "array[i] dereferences an address"
 - This is backwards from intuition and requires active reinforcement
-- Added varied test questions to CLAUDE.md for future sessions
 
 **6. Pointer Arithmetic Iteration - COMPLETED**
 - Iterated through array using `*(p + i)` instead of `scores[i]`
-- Discussed why pointer arithmetic matters:
-  - Functions only receive pointers, not arrays
-  - Memory manipulation and injection work with raw addresses
-  - Application devs use abstractions; modders work underneath them
+- Discussed why pointer arithmetic matters for modding vs application development
 
 **7. Pointer Increment Iteration - COMPLETED**
 - Implemented `while (p < end)` pattern with `p++`
@@ -74,6 +64,7 @@ This file tracks session-by-session progress. See CLAUDE.md for methodology and 
 
 **10. Modifying Values Through Pointers - COMPLETED**
 - Changed `scores[0]` from `10` to `999` using `*target = 999`
+- Changed `scores[2]` from `30` to `555` using `*(scores + 2) = 555`
 - Core principle: write to an address, the original data changes
 - This is the foundation of game memory modification
 
@@ -84,6 +75,18 @@ This file tracks session-by-session progress. See CLAUDE.md for methodology and 
 - `health_ptr = base + 0x4A8` works every time with correct offset
 - This is why game updates break mods — offsets shift when code changes
 - Cheat Engine does exactly this: find value → pointer scan → trace to static offset
+
+**12. Different Data Types (`char*`) - COMPLETED**
+- Created `char` array and `char*` pointer
+- Observed 1-byte spacing between addresses (vs 4-byte for `int*`)
+- Pointer arithmetic scales automatically based on type
+- `cout` quirk: `char*` prints as string, need `(void*)` cast to see address
+
+**13. Hex Offset Calculation - PRACTISED**
+- Question: `double` array at `0x1000`, what's `&arr[3]`?
+- Answer: 3 × 8 = 24 decimal = 0x18 hex, so `0x1018`
+- Caught mistake: wrote `0x1024` (treated 24 as hex instead of decimal)
+- Reminder: convert to hex *after* calculating in decimal
 
 ### Current Code State
 
@@ -141,22 +144,47 @@ int main() {
     
     std::cout << "scores[0] after: " << scores[0] << std::endl;
 
+    std::cout << "\n--- Modify Middle Element ---" << std::endl;
+    std::cout << "scores[2] before: " << scores[2] << std::endl;
+    
+    *(scores + 2) = 555;
+    
+    std::cout << "scores[2] after: " << scores[2] << std::endl;
+
+    std::cout << "\n--- Pointer Arithmetic with Different Types ---" << std::endl;
+    
+    char letters[5] = {'A', 'B', 'C', 'D', 'E'};
+    char* cp = letters;
+    
+    std::cout << "Address of letters[0]: " << (void*)cp << std::endl;
+    std::cout << "Address of letters[1]: " << (void*)(cp + 1) << std::endl;
+    std::cout << "Address of letters[2]: " << (void*)(cp + 2) << std::endl;
+
     return 0;
 }
 ```
 
 ### Where We Left Off
 
-Completed modifying values through pointers. Discussed ASLR and why offsets are the stable knowledge for game modding.
+**Pointers section COMPLETE.** Covered all fundamentals:
+- Declaration, dereferencing, address-of
+- Array/pointer equivalence
+- Pointer arithmetic (both iteration patterns)
+- Modification through pointers
+- Different type sizes (`int*` = 4 bytes, `char*` = 1 byte)
+- ASLR and offsets conceptually
 
-**Optional next:** Add middle element modification using `*(scores + 2) = 555` to combine pointer arithmetic with modification in one expression.
+**Next topic: Structs**
 
 ### Next Session Plan
 
 1. **Quick review questions** — Test pointer concepts (see below)
-2. **Middle element modification** — `*(scores + 2) = 555` if not done
-3. **Different data types** — `char*` pointers and strings, see how pointer arithmetic changes
-4. **Structs** — Custom data structures, foundation for understanding game objects
+2. **Structs** — Custom data structures
+   - Define a struct (e.g., `Player` with health, x, y)
+   - Access members with `.` operator
+   - Pointers to structs and `->` operator
+   - Calculate offsets within structs (directly relevant to game modding)
+3. **Memory layout of structs** — How members are arranged contiguously
 
 ### Knowledge to Test Next Session
 
@@ -168,57 +196,28 @@ Completed modifying values through pointers. Discussed ASLR and why offsets are 
 **Array/pointer equivalence:**
 - "What does `scores[2]` actually do under the hood?" (pointer arithmetic + dereference: `*(scores + 2)`)
 - "Rewrite `*(ptr + 3)` using array syntax." (`ptr[3]`)
-- "Are `scores` and `&scores[0]` the same?" (yes)
 
 **Pointer arithmetic:**
-- "What does `p++` do when `p` is an `int*`?" (adds 4 bytes — sizeof(int))
-- "If `p` points to `0x1000` and is a `char*`, what's `p + 2`?" (0x1002)
-- "If `p` points to `0x1000` and is an `int*`, what's `p + 2`?" (0x1008)
+- "What does `p++` do when `p` is an `int*`?" (adds 4 bytes)
+- "What does `p++` do when `p` is a `char*`?" (adds 1 byte)
+- "If a `double*` points to `0x2000`, what's `p + 3`?" (0x2018 — 3 × 8 = 24 = 0x18)
 
 **Modification:**
-- "How do you change the value at an address?" (dereference and assign: `*ptr = newvalue`)
-- "If you write `*target = 999`, what happens to the original variable?" (it changes to 999)
+- "How do you change the value at an address?" (`*ptr = newvalue`)
 
-**ASLR/Offsets (conceptual):**
-- "What stays the same despite ASLR?" (offsets from module base)
-- "Why do game updates break mods?" (code changes shift the offsets)
-- "What's the general workflow for finding a value to modify in a game?" (find value → pointer scan → trace to static offset from base)
-
-**References vs Pointers:**
-- "What's `int&`?" (a reference — permanent alias)
-- "Why use pointers over references for game modding?" (need explicit addresses, ability to reassign, work with arbitrary memory)
+**Practical:**
+- "Why do game updates break mods?" (offsets shift when code changes)
+- "Why cast `char*` to `void*` when printing?" (`cout` treats `char*` as string)
 
 ---
 
 ## Previous Session: 2026-01-07
 
-### Session Focus
-- Completed `sizeof` operator for arrays
-- Created bash workflow shortcuts
-- Started pointers (address-of and dereference operators)
-
 ### What Was Completed
 
-**1. sizeof Operator - COMPLETED**
-- Learnt `sizeof(array) / sizeof(array[0])` for dynamic array length calculation
-- Understood why `sizeof(array[0])` is better than `sizeof(type)` (maintainability)
-- Tested with different array sizes and types (`int` vs `char`)
-- Proved that dynamic sizing adapts automatically when array size changes
-
-**2. Bash Shortcuts - COMPLETED**
-- Created `compile-asm` function in `~/.bashrc`
-  - Compiles C++ to executable and Intel-syntax assembly in one command
-  - Usage: `compile-asm filename.cpp`
-- Created `gitpush` function in `~/.bashrc`
-  - Stages, commits, and pushes to main in one command
-  - Usage: `gitpush "commit message"`
-- Documented both shortcuts in README.md and CLAUDE.md
-
-**3. Pointers Started - PARTIAL**
-- Created `practice/cpp/pointers/` directory and `pointers.cpp`
-- Learnt address-of operator (`&`) - gets memory address of variable
-- Learnt pointer declaration syntax (`int* ptr = &num`)
-- Observed ASLR in action (addresses change each run)
+- `sizeof` operator for dynamic array length calculation
+- Bash shortcuts (`compile-asm`, `gitpush`)
+- Started pointers (address-of, declaration, ASLR observation)
 
 ---
 
@@ -231,40 +230,32 @@ Completed modifying values through pointers. Discussed ASLR and why offsets are 
 - ✓ Declaration vs expression context for `*`
 - ✓ Arrays are pointers (`scores` == `&scores[0]`)
 - ✓ Indexing is dereferencing (`scores[2]` == `*(scores + 2)`)
-- ✓ Address spacing observation (4 bytes per int)
+- ✓ Address spacing observation
 - ✓ Pointer arithmetic iteration with `*(p + i)`
 - ✓ Pointer increment iteration with `p++`
 - ✓ Modifying values through pointers
 - ✓ References vs pointers distinction
 - ✓ ASLR and offsets conceptual understanding
-- ○ Mental model reinforcement (ongoing)
-- ☐ Different data types (`char*`, strings)
-- ☐ Structs and custom data structures
+- ✓ Different data types (`char*` = 1 byte, `int*` = 4 bytes)
+- ✓ Hex offset calculation practice
 
 ### Arrays - COMPLETED (2026-01-07)
 - ✓ Declaration, initialisation, zero-based indexing
-- ✓ Memory layout understanding (contiguous 4-byte chunks for int)
-- ✓ Undefined behaviour demonstration (out-of-bounds access)
+- ✓ Memory layout understanding (contiguous chunks)
+- ✓ Undefined behaviour demonstration
 - ✓ `sizeof` operator for dynamic length calculation
-- ✓ Range-based for loops mentioned (C++11 feature)
 
 ### Loops - COMPLETED (Previous Sessions)
-- ✓ `while` loops - condition checked first
-- ✓ `do-while` loops - condition checked after, guaranteed one execution
-- ✓ `for` loops - best for counting/iteration
-- ✓ Loop control - `break` and `continue`
-- ✓ Input validation with `cin.fail()`, `cin.clear()`, `cin.ignore()`
+- ✓ `while`, `do-while`, `for` loops
+- ✓ Loop control (`break`, `continue`)
+- ✓ Input validation
 
 ### Functions - COMPLETED (Previous Sessions)
 - ✓ Parameters and return values
-- ✓ x86-64 calling conventions (EDI/ESI for params, EAX for return)
-- ✓ Compiling to assembly for analysis
+- ✓ x86-64 calling conventions
 
 ### Git Workflow - COMPLETED (Previous Sessions)
-- ✓ Branch strategy (feature → develop → main)
-- ✓ GitHub authentication (Personal Access Token)
-- ✓ Handling divergent branches
-- ✓ Understanding when to use full workflow vs pragmatic commits
+- ✓ Branch strategy, authentication, divergent branches
 
 ---
 
@@ -273,15 +264,9 @@ Completed modifying values through pointers. Discussed ASLR and why offsets are 
 **Phase:** C/C++ Development (Phase 2 of 5)
 
 **Immediate Goals:**
-- [ ] Different data types (`char*` pointers, see how arithmetic changes)
-- [ ] Structs — custom data structures (foundation for game objects)
-- [ ] Memory management (heap vs stack from developer perspective)
-- [ ] Reinforce pointer mental model through continued practice
-
-**Concept Requiring Active Reinforcement:**
-The relationship between arrays and pointers, specifically that `array[i]` is syntactic sugar for `*(array + i)`. User's high-level mental model ("pointing to a value") needs to be replaced with low-level understanding ("dereferencing an address"). This will be tested at the start of each session until it becomes automatic.
-
-**Key Insight Gained This Session:**
-ASLR randomises base addresses, but offsets remain constant. Game modding is about finding and using those stable offsets. This connects directly to Cheat Engine workflow and future DLL injection work.
+- [ ] Structs — custom data structures (NEXT)
+- [ ] Pointers to structs and `->` operator
+- [ ] Memory layout and offset calculation within structs
+- [ ] Memory management (heap vs stack)
 
 **Next Phase:** Windows Internals & DLL Development

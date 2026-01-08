@@ -12,6 +12,8 @@ This file tracks session-by-session progress. See CLAUDE.md for methodology and 
 - Continued pointers — array/pointer relationship
 - Identified mental model shift needed (high-level vs low-level thinking)
 - Pointer arithmetic iteration
+- Modifying values through pointers
+- ASLR and offsets conceptual discussion
 
 ### What Was Completed Today
 
@@ -52,10 +54,36 @@ This file tracks session-by-session progress. See CLAUDE.md for methodology and 
   - Memory manipulation and injection work with raw addresses
   - Application devs use abstractions; modders work underneath them
 
-**7. Key Insight Discussed**
-- Application developers think in terms of *what* data represents (`player.health`)
-- Modders/RE work underneath: `base_address + 0x4A8`
-- This is the fundamental difference between creating applications and manipulating them
+**7. Pointer Increment Iteration - COMPLETED**
+- Implemented `while (p < end)` pattern with `p++`
+- Understood `p++` adds `sizeof(type)` bytes (4 for int), not 1 byte
+- Two patterns now known:
+  - `*(p + i)` — fixed base, calculate offset
+  - `p++` — move the pointer itself
+
+**8. Declaration vs Operation Clarification - COMPLETED**
+- `int* p` — declaration: "p is a pointer to int" (the `*` is part of the type)
+- `*p` — expression: "dereference p" (the `*` is an operator)
+- Same symbol, two jobs depending on context
+
+**9. References vs Pointers - DISCUSSED**
+- `int&` creates a reference (permanent alias, can't reassign, can't be null)
+- `int*` creates a pointer (can reassign, can be null, explicit indirection)
+- References useful for clean function parameters when modifying originals
+- Pointers needed for memory manipulation work — references too "polite"
+
+**10. Modifying Values Through Pointers - COMPLETED**
+- Changed `scores[0]` from `10` to `999` using `*target = 999`
+- Core principle: write to an address, the original data changes
+- This is the foundation of game memory modification
+
+**11. ASLR and Offsets - CONCEPTUAL UNDERSTANDING**
+- ASLR randomises base addresses each process load
+- But **offsets stay the same** — structure inside executable is fixed
+- Workflow: get module base at runtime (`GetModuleHandle()`), add known offset
+- `health_ptr = base + 0x4A8` works every time with correct offset
+- This is why game updates break mods — offsets shift when code changes
+- Cheat Engine does exactly this: find value → pointer scan → trace to static offset
 
 ### Current Code State
 
@@ -97,16 +125,6 @@ int main() {
         std::cout << "*(p + " << i << ") = " << *(p + i) << std::endl;
     }
 
-    return 0;
-}
-```
-
-### Where We Left Off
-
-About to try iterating by incrementing the pointer itself (`p++`) instead of using `p + i`. Question posed: "What does `p++` do in terms of bytes?"
-
-**Next code to add:**
-```cpp
     std::cout << "\n--- Iterate by Incrementing Pointer ---" << std::endl;
     int* p2 = scores;
     int* end = scores + 5;
@@ -114,44 +132,61 @@ About to try iterating by incrementing the pointer itself (`p++`) instead of usi
         std::cout << *p2 << std::endl;
         p2++;
     }
+
+    std::cout << "\n--- Modify Through Pointer ---" << std::endl;
+    std::cout << "scores[0] before: " << scores[0] << std::endl;
+    
+    int* target = scores;  // points to scores[0]
+    *target = 999;         // change the value at that address
+    
+    std::cout << "scores[0] after: " << scores[0] << std::endl;
+
+    return 0;
+}
 ```
 
-**Question to answer:** What does `p++` do in terms of bytes? (Expected: adds 4 bytes because `int` is 4 bytes — pointer arithmetic scales by `sizeof(type)`)
+### Where We Left Off
+
+Completed modifying values through pointers. Discussed ASLR and why offsets are the stable knowledge for game modding.
+
+**Optional next:** Add middle element modification using `*(scores + 2) = 555` to combine pointer arithmetic with modification in one expression.
 
 ### Next Session Plan
 
-1. **Answer the question** — What does `p++` do in terms of bytes?
-2. **Implement pointer increment iteration** — The `while (p < end)` pattern
-3. **Modify values through pointers** — Show `*ptr = 100` changes the original variable
-4. **Practice converting notations** — `array[i]` ↔ `*(array + i)` exercises
+1. **Quick review questions** — Test pointer concepts (see below)
+2. **Middle element modification** — `*(scores + 2) = 555` if not done
+3. **Different data types** — `char*` pointers and strings, see how pointer arithmetic changes
+4. **Structs** — Custom data structures, foundation for understanding game objects
 
 ### Knowledge to Test Next Session
 
-**Must ask these to reinforce mental model shift:**
-
-Basic recall:
+**Pointer fundamentals:**
 - "What does `&variable` give you?" (the memory address)
 - "What does `*pointer` give you?" (the value at that address)
+- "What's the difference between `int* ptr` (declaration) and `*ptr` (expression)?" (type vs dereference operator)
 
-Syntax distinction:
-- "What's the difference between `int* ptr` and `*ptr`?" (declaration vs dereferencing)
+**Array/pointer equivalence:**
+- "What does `scores[2]` actually do under the hood?" (pointer arithmetic + dereference: `*(scores + 2)`)
+- "Rewrite `*(ptr + 3)` using array syntax." (`ptr[3]`)
+- "Are `scores` and `&scores[0]` the same?" (yes)
 
-The critical insight (ask multiple ways):
-- "What does `scores[2]` actually do under the hood?" (pointer arithmetic + dereference)
-- "Is `scores[2]` a pointer or a value?" (a value — it's already dereferenced)
-- "Rewrite `scores[3]` using pointer syntax." (`*(scores + 3)`)
-- "Rewrite `*(ptr + 1)` using array syntax." (`ptr[1]`)
+**Pointer arithmetic:**
+- "What does `p++` do when `p` is an `int*`?" (adds 4 bytes — sizeof(int))
+- "If `p` points to `0x1000` and is a `char*`, what's `p + 2`?" (0x1002)
+- "If `p` points to `0x1000` and is an `int*`, what's `p + 2`?" (0x1008)
 
-Address arithmetic:
-- "Why does `scores + 1` add 4 bytes, not 1 byte?" (scales by sizeof(type))
-- "If `scores` is at `0x1000`, what's the address of `scores[2]`?" (0x1008)
+**Modification:**
+- "How do you change the value at an address?" (dereference and assign: `*ptr = newvalue`)
+- "If you write `*target = 999`, what happens to the original variable?" (it changes to 999)
 
-Equivalence:
-- "Are `scores` and `&scores[0]` the same?" (yes — both address of first element)
+**ASLR/Offsets (conceptual):**
+- "What stays the same despite ASLR?" (offsets from module base)
+- "Why do game updates break mods?" (code changes shift the offsets)
+- "What's the general workflow for finding a value to modify in a game?" (find value → pointer scan → trace to static offset from base)
 
-New for this session:
-- "Why use pointer arithmetic over `array[i]`?" (functions receive pointers not arrays, memory manipulation works with raw addresses)
-- "What's the difference between how app devs and modders think about data?" (abstractions vs raw memory/offsets)
+**References vs Pointers:**
+- "What's `int&`?" (a reference — permanent alias)
+- "Why use pointers over references for game modding?" (need explicit addresses, ability to reassign, work with arbitrary memory)
 
 ---
 
@@ -189,17 +224,22 @@ New for this session:
 
 ## Recent Milestones
 
-### Pointers - IN PROGRESS (2026-01-08)
+### Pointers - FUNDAMENTALS COMPLETE (2026-01-08)
 - ✓ Address-of operator (`&`)
 - ✓ Pointer declaration (`int* ptr`)
 - ✓ Dereference operator (`*ptr`)
+- ✓ Declaration vs expression context for `*`
 - ✓ Arrays are pointers (`scores` == `&scores[0]`)
 - ✓ Indexing is dereferencing (`scores[2]` == `*(scores + 2)`)
 - ✓ Address spacing observation (4 bytes per int)
 - ✓ Pointer arithmetic iteration with `*(p + i)`
-- ○ Mental model reinforcement (ongoing - requires practice)
-- ☐ Pointer increment iteration (`p++`)
-- ☐ Modifying values through pointers
+- ✓ Pointer increment iteration with `p++`
+- ✓ Modifying values through pointers
+- ✓ References vs pointers distinction
+- ✓ ASLR and offsets conceptual understanding
+- ○ Mental model reinforcement (ongoing)
+- ☐ Different data types (`char*`, strings)
+- ☐ Structs and custom data structures
 
 ### Arrays - COMPLETED (2026-01-07)
 - ✓ Declaration, initialisation, zero-based indexing
@@ -233,13 +273,15 @@ New for this session:
 **Phase:** C/C++ Development (Phase 2 of 5)
 
 **Immediate Goals:**
-- [ ] Pointer increment iteration (`p++` pattern)
-- [ ] Modifying values through pointers
-- [ ] Reinforce pointer/array mental model through varied exercises
-- [ ] Different data types (char, float, string, bool)
+- [ ] Different data types (`char*` pointers, see how arithmetic changes)
+- [ ] Structs — custom data structures (foundation for game objects)
 - [ ] Memory management (heap vs stack from developer perspective)
+- [ ] Reinforce pointer mental model through continued practice
 
 **Concept Requiring Active Reinforcement:**
 The relationship between arrays and pointers, specifically that `array[i]` is syntactic sugar for `*(array + i)`. User's high-level mental model ("pointing to a value") needs to be replaced with low-level understanding ("dereferencing an address"). This will be tested at the start of each session until it becomes automatic.
+
+**Key Insight Gained This Session:**
+ASLR randomises base addresses, but offsets remain constant. Game modding is about finding and using those stable offsets. This connects directly to Cheat Engine workflow and future DLL injection work.
 
 **Next Phase:** Windows Internals & DLL Development

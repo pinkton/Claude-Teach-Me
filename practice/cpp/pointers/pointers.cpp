@@ -19,5 +19,23 @@ int main() {
     std::cout << "Address of scores[0]: " << &scores[0] << std::endl;
     std::cout << "Address of scores[1]: " << &scores[1] << std::endl;
     std::cout << "Address of scores[2]: " << &scores[2] << std::endl;
+    
+    std::cout << "\n--- Iterate with Pointer Arithmetic ---" << std::endl;
+    int* p = scores;  // p now points to first element
+    for (int i = 0; i < 5; i++) {
+        std::cout << "*(p + " << i << ") = " << *(p + i) << std::endl;
+    }
+    
+    std::cout << "\n--- Iterate by Incrementing Pointer ---" << std::endl;
+    int* end = scores + 5;
+    while (p < end) {
+        std::cout << *p << std::endl;
+        p++;
+    } 
+    
+    
+    
+    
+    
     return 0;
 }

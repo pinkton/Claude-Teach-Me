@@ -338,19 +338,19 @@ gitpush() {
 ## Next Session Goals
 
 **Immediate next steps:**
-1. **Answer pending question** — What does `p++` do in terms of bytes?
-2. **Pointer increment iteration** — Implement `while (p < end)` version with `p++`
-3. **Modify values through pointers** — Show `*ptr = 100` changes the original variable
-4. **Fix hardcoded array size** — Use `sizeof` to calculate `end` pointer properly
+1. **Different data types** — `char*` pointers and strings, see how pointer arithmetic changes with different sizes
+2. **Structs** — Custom data structures (foundation for understanding game objects in memory)
+3. **Memory management** — Heap vs stack from developer perspective
 
 **Current progress:**
 - Completed pointer fundamentals (address-of, dereference, declaration)
 - Proved array/pointer equivalence (`scores` == `&scores[0]`)
 - Proved indexing is pointer arithmetic (`scores[2]` == `*(scores + 2)`)
-- Implemented pointer arithmetic iteration (`*(p + i)`)
-- Observed address spacing (4 bytes per int)
-- **Identified mental model gap** - User thinks in high-level "pointing to value" terms, needs to internalise low-level "dereference" reality
-- **Key insight gained** - App devs work with abstractions; modders work with raw addresses
+- Implemented both iteration patterns: `*(p + i)` and `p++`
+- Modifying values through pointers (`*target = 999`)
+- Understood declaration (`int* p`) vs expression (`*p`) context for `*`
+- Clarified references (`int&`) vs pointers (`int*`) — pointers needed for modding work
+- **Key insight gained** — ASLR randomises base addresses but offsets stay constant; game modding is about finding stable offsets
 
 **Why reinforcement matters:**
 - Years of high-level programming create strong mental models
@@ -359,13 +359,12 @@ gitpush() {
 - Essential foundation for memory manipulation in game modding
 
 **Upcoming tasks (transferable skills focus):**
-1. Pointer increment iteration (next)
-2. Modifying values through pointers
-3. Structs and custom data structures
-4. Build simple file I/O tool (reads/writes files - applicable to save file analysis)
-5. Create first DLL (transferable to any Windows application)
-6. Practice on UT99 (safe environment to apply skills)
-7. Eventually: Apply everything to This Means Warp (or whatever game interests you by then)
+1. Different data types and pointer arithmetic (next)
+2. Structs and custom data structures
+3. Build simple file I/O tool (reads/writes files - applicable to save file analysis)
+4. Create first DLL (transferable to any Windows application)
+5. Practice on UT99 (safe environment to apply skills)
+6. Eventually: Apply everything to This Means Warp (or whatever game interests you by then)
 
 ---
 

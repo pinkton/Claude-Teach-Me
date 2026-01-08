@@ -11,6 +11,7 @@ This file tracks session-by-session progress. See CLAUDE.md for methodology and 
 ### Session Focus
 - Continued pointers — array/pointer relationship
 - Identified mental model shift needed (high-level vs low-level thinking)
+- Pointer arithmetic iteration
 
 ### What Was Completed Today
 
@@ -43,6 +44,18 @@ This file tracks session-by-session progress. See CLAUDE.md for methodology and 
 - Low-level reality: "array[i] dereferences an address"
 - This is backwards from intuition and requires active reinforcement
 - Added varied test questions to CLAUDE.md for future sessions
+
+**6. Pointer Arithmetic Iteration - COMPLETED**
+- Iterated through array using `*(p + i)` instead of `scores[i]`
+- Discussed why pointer arithmetic matters:
+  - Functions only receive pointers, not arrays
+  - Memory manipulation and injection work with raw addresses
+  - Application devs use abstractions; modders work underneath them
+
+**7. Key Insight Discussed**
+- Application developers think in terms of *what* data represents (`player.health`)
+- Modders/RE work underneath: `base_address + 0x4A8`
+- This is the fundamental difference between creating applications and manipulating them
 
 ### Current Code State
 
@@ -78,22 +91,39 @@ int main() {
     std::cout << "Address of scores[1]: " << &scores[1] << std::endl;
     std::cout << "Address of scores[2]: " << &scores[2] << std::endl;
 
+    std::cout << "\n--- Iterate with Pointer Arithmetic ---" << std::endl;
+    int* p = scores;  // p now points to first element
+    for (int i = 0; i < 5; i++) {
+        std::cout << "*(p + " << i << ") = " << *(p + i) << std::endl;
+    }
+
     return 0;
 }
 ```
 
 ### Where We Left Off
 
-User understands the concepts intellectually but identified that the mental model needs reinforcement through practice. The high-level abstraction of "pointing to a value" is deeply ingrained and needs to be replaced with the low-level reality of "dereferencing an address."
+About to try iterating by incrementing the pointer itself (`p++`) instead of using `p + i`. Question posed: "What does `p++` do in terms of bytes?"
 
-**Next action:** Practice exercises to reinforce the pointer/array mental model
+**Next code to add:**
+```cpp
+    std::cout << "\n--- Iterate by Incrementing Pointer ---" << std::endl;
+    int* p2 = scores;
+    int* end = scores + 5;
+    while (p2 < end) {
+        std::cout << *p2 << std::endl;
+        p2++;
+    }
+```
+
+**Question to answer:** What does `p++` do in terms of bytes? (Expected: adds 4 bytes because `int` is 4 bytes — pointer arithmetic scales by `sizeof(type)`)
 
 ### Next Session Plan
 
-1. **Warm-up questions** - Test the pointer concepts (see questions below)
-2. **Iterate array with pointer** - Use pointer arithmetic instead of index to traverse array
-3. **Modify values through pointers** - Show `*ptr = 100` changes the original variable
-4. **Two-way equivalence practice** - Convert between `array[i]` and `*(array + i)` notation
+1. **Answer the question** — What does `p++` do in terms of bytes?
+2. **Implement pointer increment iteration** — The `while (p < end)` pattern
+3. **Modify values through pointers** — Show `*ptr = 100` changes the original variable
+4. **Practice converting notations** — `array[i]` ↔ `*(array + i)` exercises
 
 ### Knowledge to Test Next Session
 
@@ -118,6 +148,10 @@ Address arithmetic:
 
 Equivalence:
 - "Are `scores` and `&scores[0]` the same?" (yes — both address of first element)
+
+New for this session:
+- "Why use pointer arithmetic over `array[i]`?" (functions receive pointers not arrays, memory manipulation works with raw addresses)
+- "What's the difference between how app devs and modders think about data?" (abstractions vs raw memory/offsets)
 
 ---
 
@@ -162,8 +196,9 @@ Equivalence:
 - ✓ Arrays are pointers (`scores` == `&scores[0]`)
 - ✓ Indexing is dereferencing (`scores[2]` == `*(scores + 2)`)
 - ✓ Address spacing observation (4 bytes per int)
+- ✓ Pointer arithmetic iteration with `*(p + i)`
 - ○ Mental model reinforcement (ongoing - requires practice)
-- ☐ Pointer arithmetic iteration
+- ☐ Pointer increment iteration (`p++`)
 - ☐ Modifying values through pointers
 
 ### Arrays - COMPLETED (2026-01-07)
@@ -198,9 +233,9 @@ Equivalence:
 **Phase:** C/C++ Development (Phase 2 of 5)
 
 **Immediate Goals:**
+- [ ] Pointer increment iteration (`p++` pattern)
+- [ ] Modifying values through pointers
 - [ ] Reinforce pointer/array mental model through varied exercises
-- [ ] Pointer arithmetic iteration (traverse array with pointer, not index)
-- [ ] Modify values through pointers
 - [ ] Different data types (char, float, string, bool)
 - [ ] Memory management (heap vs stack from developer perspective)
 

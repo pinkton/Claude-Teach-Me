@@ -46,6 +46,9 @@ Every training session is to be it's own folder to some degree, allowing public 
 **Critical Insight:**
 User can **analyse** code but needs to learn to **write** code. Shift from "reverse engineering analyst" to "game modding developer."
 
+**Key Realisation (2026-01-08):**
+Application developers work with abstractions (named arrays, objects). Modders/RE professionals work underneath with raw addresses (`base_address + offset`). Pointer arithmetic is the foundation for memory manipulation — this is the main difference between someone who creates applications and someone who mods/breaks apart/manipulates them.
+
 ## Learning Path (Updated)
 
 **Learning Path (in order):**
@@ -100,7 +103,10 @@ User can **analyse** code but needs to learn to **write** code. Shift from "reve
   - [x] Arrays ARE pointers - `scores` and `&scores[0]` are identical
   - [x] Array indexing is pointer arithmetic - `scores[2]` equals `*(scores + 2)`
   - [x] Memory address spacing - addresses increase by `sizeof(type)` bytes
-- [ ] Pointer arithmetic practice - iterating arrays with pointers instead of indices
+  - [x] Pointer arithmetic iteration - using `*(p + i)` to traverse arrays
+  - [x] Why pointer arithmetic matters for modding vs app development
+- [ ] Pointer increment iteration (`p++` to move through array)
+- [ ] Modifying values through pointers (`*ptr = 100`)
 - [ ] Memory management (heap vs stack from developer perspective)
 - [ ] Creating DLLs and understanding linking
 - [ ] Build systems (Makefiles, CMake, or similar)
@@ -252,10 +258,12 @@ gitpush() {
 - "What does `scores[2]` actually do under the hood?" (pointer arithmetic + dereference: `*(scores + 2)`)
 - "Why does `scores + 1` add 4 bytes, not 1 byte?" (pointer arithmetic scales by `sizeof(type)`)
 - "If `scores` is at address `0x1000`, what address is `scores + 2`?" (0x1008 for int array)
-- "What are `scores` and `&scores[0]}` — same or different?" (same — both are address of first element)
+- "What are `scores` and `&scores[0]` — same or different?" (same — both are address of first element)
 - "Is `scores[2]` a pointer or a value?" (a value — the bracket notation dereferences)
 - "Rewrite `scores[3]` using pointer syntax." (`*(scores + 3)`)
 - "Rewrite `*(ptr + 1)` using array syntax." (`ptr[1]`)
+- "What does `p++` do when `p` is an `int*`?" (moves pointer forward by 4 bytes)
+- "Why can we compare `p < end` to know when to stop?" (both are addresses; we stop when p reaches end of array)
 
 **Game RE questions (future):**
 - "How would you find the save game code if you don't know where it is?"
@@ -330,17 +338,19 @@ gitpush() {
 ## Next Session Goals
 
 **Immediate next steps:**
-1. **Pointer arithmetic practice** - Iterate through array using pointer instead of index
-2. **Reinforce mental model** - More exercises showing `array[i]` ↔ `*(array + i)` equivalence
-3. **Modify values through pointers** - Show that `*ptr = 100` changes the original variable
-4. **Different data types** - char, float, string, bool (can introduce alongside pointers)
+1. **Answer pending question** — What does `p++` do in terms of bytes?
+2. **Pointer increment iteration** — Implement `while (p < end)` version with `p++`
+3. **Modify values through pointers** — Show `*ptr = 100` changes the original variable
+4. **Fix hardcoded array size** — Use `sizeof` to calculate `end` pointer properly
 
 **Current progress:**
 - Completed pointer fundamentals (address-of, dereference, declaration)
 - Proved array/pointer equivalence (`scores` == `&scores[0]`)
 - Proved indexing is pointer arithmetic (`scores[2]` == `*(scores + 2)`)
+- Implemented pointer arithmetic iteration (`*(p + i)`)
 - Observed address spacing (4 bytes per int)
 - **Identified mental model gap** - User thinks in high-level "pointing to value" terms, needs to internalise low-level "dereference" reality
+- **Key insight gained** - App devs work with abstractions; modders work with raw addresses
 
 **Why reinforcement matters:**
 - Years of high-level programming create strong mental models
@@ -349,7 +359,7 @@ gitpush() {
 - Essential foundation for memory manipulation in game modding
 
 **Upcoming tasks (transferable skills focus):**
-1. Pointer arithmetic iteration (current)
+1. Pointer increment iteration (next)
 2. Modifying values through pointers
 3. Structs and custom data structures
 4. Build simple file I/O tool (reads/writes files - applicable to save file analysis)

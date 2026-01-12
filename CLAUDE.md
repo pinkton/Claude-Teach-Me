@@ -73,29 +73,29 @@ Application developers work with abstractions (named arrays, objects). Modders/R
 **Goal:** Learn to write C/C++ code, not just read assembly.
 
 - [x] Development environment setup (gcc, g++, make already installed in WSL2)
-- [x] First Hello World program (`practice/cpp/hello-world/helloworld.cpp`)
+- [x] First Hello World program (`cpp/hello-world/helloworld.cpp`)
 - [x] Compilation process understanding (preprocessing, compiling, assembly, linking)
 - [x] Compiling to Intel-syntax assembly (`g++ -S -masm=intel`) for analysis
-- [x] Functions with parameters and return values (`practice/cpp/add-two-numbers/add-two-numbers.cpp`)
+- [x] Functions with parameters and return values (`cpp/add-two-numbers/add-two-numbers.cpp`)
 - [x] Understanding x86-64 calling conventions (EDI, ESI for params; EAX for return)
 - [x] User input with `std::cin >>`
-- [x] If/else statements and conditional logic (`practice/cpp/if-number-loop/if-greater-smaller.cpp`)
+- [x] If/else statements and conditional logic (`cpp/if-number-loop/if-greater-smaller.cpp`)
 - [x] Key bug discovered: `=` (assignment) vs `==` (comparison) - caught and fixed
 - [x] Loops - all three types mastered:
-  - [x] `while` loops - condition checked first (`practice/cpp/if-number-loop/if-greater-smaller.cpp`)
-  - [x] `do-while` loops - condition checked after, guaranteed one execution (`practice/cpp/do-while-loop/do-while-loop.cpp`)
-  - [x] `for` loops - best for counting/iteration with init, condition, update (`practice/cpp/for-loop/for-loop.cpp`)
+  - [x] `while` loops - condition checked first (`cpp/if-number-loop/if-greater-smaller.cpp`)
+  - [x] `do-while` loops - condition checked after, guaranteed one execution (`cpp/do-while-loop/do-while-loop.cpp`)
+  - [x] `for` loops - best for counting/iteration with init, condition, update (`cpp/for-loop/for-loop.cpp`)
 - [x] Loop control - `break` to exit, `continue` to skip to next iteration
 - [x] Input validation - `std::cin.fail()` to detect errors, `std::cin.clear()` to reset, `std::cin.ignore()` to flush buffer
 - [x] String concatenation in output - chaining `<<` operators instead of `+` for mixed types
-- [x] Arrays - fundamentals completed (`practice/cpp/arrays/arrays.cpp`):
+- [x] Arrays - fundamentals completed (`cpp/arrays/arrays.cpp`):
   - [x] Declaration and initialisation (`int numbers[5] = {1, 2, 4, 8, 16}`)
   - [x] Zero-based indexing - valid indices 0 to N-1
   - [x] Memory layout - contiguous blocks, 4-byte spacing for int arrays
   - [x] Iteration with for loops
   - [x] Out-of-bounds access and undefined behaviour - intentionally triggered to see garbage stack values
   - [x] sizeof operator for calculating array length
-- [x] Pointers - fundamentals (`practice/cpp/pointers/pointers.cpp`):
+- [x] Pointers - fundamentals (`cpp/pointers/pointers.cpp`):
   - [x] Address-of operator (`&`) - gets memory address of variable
   - [x] Pointer declaration (`int* ptr = &num`)
   - [x] Dereference operator (`*ptr`) - accesses value at address
@@ -105,8 +105,23 @@ Application developers work with abstractions (named arrays, objects). Modders/R
   - [x] Memory address spacing - addresses increase by `sizeof(type)` bytes
   - [x] Pointer arithmetic iteration - using `*(p + i)` to traverse arrays
   - [x] Why pointer arithmetic matters for modding vs app development
-- [ ] Pointer increment iteration (`p++` to move through array)
-- [ ] Modifying values through pointers (`*ptr = 100`)
+- [x] Pointer increment iteration (`p++` to move through array)
+- [x] Modifying values through pointers (`*ptr = 100`)
+- [x] Different data types (`char*` = 1 byte, `int*` = 4 bytes)
+- [x] References (`int&`) vs pointers (`int*`)
+- [x] ASLR and offsets conceptual understanding
+- [x] Hex offset calculation practice
+- [x] Structs - fundamentals started (`cpp/structs/structs.cpp`):
+  - [x] Struct definition and instantiation
+  - [x] Member access with `.` operator
+  - [x] Pointers to structs and `->` operator
+  - [x] Member offset calculation (0x00, 0x04, 0x08)
+  - [x] Treating structs as raw memory (cast to `int*`)
+  - [x] Pointer arithmetic scaling bug discovered (Player* vs int*)
+  - [ ] `offsetof()` macro
+  - [ ] Struct padding and alignment
+  - [ ] Nested structs
+  - [ ] Arrays of structs
 - [ ] Memory management (heap vs stack from developer perspective)
 - [ ] Creating DLLs and understanding linking
 - [ ] Build systems (Makefiles, CMake, or similar)
@@ -265,6 +280,15 @@ gitpush() {
 - "What does `p++` do when `p` is an `int*`?" (moves pointer forward by 4 bytes)
 - "Why can we compare `p < end` to know when to stop?" (both are addresses; we stop when p reaches end of array)
 
+**Struct questions (ACTIVE - requires reinforcement):**
+- "What's the difference between `.` and `->`?" (. for direct access, -> for pointer access)
+- "Why can't you write `*ptr.health`?" (operator precedence - becomes `*(ptr.health)`)
+- "What is `ptr->health` syntactic sugar for?" (`(*ptr).health`)
+- "If `Player* ptr` is at `0x1000`, what address is `ptr + 2`?" (0x1018 — two Player structs = 2 × 12 = 24 = 0x18)
+- "If you cast Player* to int*, what does `intPtr + 1` do?" (moves 4 bytes, not 12)
+- "What's the offset of the third `int` member in a struct?" (0x08 — 0 + 4 + 4)
+- "How do you modify player health at address `0x12340000` with offset `0x00`?" (`*(int*)(0x12340000 + 0x00) = 9999`)
+
 **Game RE questions (future):**
 - "How would you find the save game code if you don't know where it is?"
 - "What's the difference between analysing malware and analysing game logic?"
@@ -295,36 +319,37 @@ gitpush() {
 /Coding/
 ├── README.md                           # Public-facing project description
 ├── CLAUDE.md                           # This file - Claude Code instructions
+├── PROGRESS.md                         # Session-by-session progress tracker
 ├── git-notes.md                        # Git command reference
 ├── .gitignore                          # Ignore compiled outputs
-└── practice/
-    ├── github_commit_push/             # Git workflow learning exercises
-    │   ├── hello.py
-    │   └── goodbye.py
-    └── cpp/                            # C++ learning exercises
-        ├── programming.md              # C++ learning notes
-        ├── hello-world/
-        │   ├── helloworld.cpp          # First C++ program
-        │   └── readme.md               # Notes on Hello World
-        ├── add-two-numbers/
-        │   ├── add-two-numbers.cpp     # Function with parameters/return
-        │   └── readme.md               # Notes on functions
-        ├── if-number-loop/
-        │   ├── if-greater-smaller.cpp  # While loop with input validation
-        │   └── readme.md               # Notes on while loops
-        ├── do-while-loop/
-        │   ├── do-while-loop.cpp       # Do-while loop example
-        │   └── readme.md               # Notes on do-while loops
-        ├── for-loop/
-        │   ├── for-loop.cpp            # For loop counting examples
-        │   └── readme.md               # Notes on for loops
-        ├── arrays/
-        │   ├── arrays.cpp              # Array fundamentals and undefined behaviour
-        │   └── readme.md               # Notes on arrays
-        └── pointers/
-            ├── pointers.cpp            # Pointer fundamentals and array relationship
-            └── readme.md               # Notes on pointers
+├── git_commands_lessons/               # Git workflow learning exercises
+│   └── github_commit_push/
+│       ├── hello.py
+│       └── goodbye.py
+└── cpp/                                # C++ learning exercises
+    ├── programming.md                  # C++ learning notes
+    ├── hello-world/
+    │   └── helloworld.cpp              # First C++ program
+    ├── add-two-numbers/
+    │   └── add-two-numbers.cpp         # Function with parameters/return
+    ├── if-number-loop/
+    │   └── if-greater-smaller.cpp      # While loop with input validation
+    ├── do-while-loop/
+    │   └── do-while-loop.cpp           # Do-while loop example
+    ├── for-loop/
+    │   └── for-loop.cpp                # For loop counting examples
+    ├── arrays/
+    │   ├── arrays.cpp                  # Array fundamentals
+    │   ├── arrays-loop.cpp             # Additional array iteration examples
+    │   └── buffer-overflow-array.cpp   # Undefined behaviour demonstration
+    ├── pointers/
+    │   ├── integer-pointers.cpp        # Pointer fundamentals and array relationship
+    │   └── character-pointers.cpp      # Char pointer arithmetic (different type sizes)
+    └── structs/
+        └── structs.cpp                 # Struct fundamentals and memory layout
 ```
+
+**Note:** No readme.md files exist in subdirectories. All documentation is in CLAUDE.md (instructions), PROGRESS.md (session tracking), and programming.md (general C++ notes).
 
 ## Important Notes
 
@@ -338,15 +363,24 @@ gitpush() {
 ## Next Session Goals
 
 **Immediate next steps:**
-1. **Structs** — Custom data structures
-   - Define a struct (e.g., `Player` with health, x, y)
-   - Access members with `.` operator
-   - Pointers to structs and `->` operator
-   - Calculate offsets within structs (directly relevant to game modding)
-2. **Memory layout of structs** — How members are arranged contiguously
-3. **Memory management** — Heap vs stack from developer perspective
+1. **Complete structs** — Continue custom data structures work
+   - `offsetof()` macro for compile-time offset calculation
+   - Struct padding and alignment (why sizeof might be larger than expected)
+   - Arrays of structs (managing multiple Player instances)
+   - Nested structs (structs within structs)
+2. **Memory management** — Heap vs stack from developer perspective
+3. **Dynamic memory allocation** — `new`, `delete`, and why it matters
 
-**Current progress — Pointers COMPLETE:**
+**Current progress — Structs STARTED (2026-01-12):**
+- ✓ Struct definition and instantiation
+- ✓ Member access with `.` operator
+- ✓ Pointers to structs with `->` operator
+- ✓ Member offset calculation and memory layout
+- ✓ Treating structs as raw memory (cast to `int*`)
+- ✓ Pointer arithmetic scaling (critical bug discovered and fixed)
+- Next: `offsetof()` macro, padding, arrays of structs
+
+**Pointers COMPLETE:**
 - Declaration, dereferencing, address-of
 - Array/pointer equivalence (`scores` == `&scores[0]`)
 - Indexing is pointer arithmetic (`scores[2]` == `*(scores + 2)`)

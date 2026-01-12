@@ -1,12 +1,179 @@
 # Learning Progress Tracker
 
-**Last Updated:** 2026-01-08
+**Last Updated:** 2026-01-12
 
 This file tracks session-by-session progress. See CLAUDE.md for methodology and overall learning path.
 
 ---
 
-## Current Session: 2026-01-08
+## Current Session: 2026-01-12
+
+### Session Focus
+- Comprehensive knowledge test across all topics (Git, Functions, Loops, Arrays, Pointers)
+- Started structs — custom data structures
+- Pointers to structs and `->` operator
+- Memory layout and member offsets
+- Treating structs as raw memory (critical for game modding)
+- Pointer arithmetic scaling bug (Player* vs int*)
+
+### What Was Completed Today
+
+**1. Comprehensive Knowledge Test - COMPLETED**
+- Tested retention across all previous topics after 4-day gap
+- Score: 55/100 (needs improvement, but expected for new material)
+- Identified critical gaps:
+  - Function return values (RAX, not stack)
+  - Array/pointer equivalence (`scores` == `&scores[0]`)
+  - Pointer syntax (`*(scores + 3)` not `scores[base+12]`)
+  - Hex arithmetic (0x1000 + 12 = 0x100C, not 0x1012)
+  - Dereference vs assignment (`*ptr = 500` not `int* ptr = 500`)
+
+**2. Struct Definition and Usage - COMPLETED**
+- Defined `Player` struct with `int health, x, y`
+- Created struct instances: `Player myPlayer;`
+- Accessed members directly: `myPlayer.health = 100;`
+- File: `cpp/structs/structs.cpp`
+
+**3. Pointers to Structs - COMPLETED**
+- Created pointer to struct: `Player* ptr = &myPlayer;`
+- Used `->` operator: `ptr->health = 100;`
+- Understood `->` as syntactic sugar for `(*ptr).member`
+- Operator precedence: can't write `*ptr.health` (becomes `*(ptr.health)`)
+
+**4. Member Offsets - COMPLETED**
+- Calculated member offsets:
+  - `health` at offset `0x00`
+  - `x` at offset `0x04`
+  - `y` at offset `0x08`
+- Each `int` is 4 bytes, so members are 4 bytes apart
+
+**5. Structs as Raw Memory - COMPLETED**
+- Cast struct pointer to `int*`: `int* dataPtr = (int*)ptr;`
+- Accessed members by offset: `*(dataPtr + 0)`, `*(dataPtr + 1)`, `*(dataPtr + 2)`
+- Looped through struct members as an array of ints
+- **This is exactly how Cheat Engine and game mods work**
+
+**6. Critical Bug Discovery - POINTER ARITHMETIC SCALING**
+- User initially wrote: `std::cout << (ptr + i)` where `ptr` is `Player*`
+- This moves by `sizeof(Player)` = 12 bytes, not 4!
+- **Correct:** Cast to `int*` first, then do arithmetic
+- `Player* ptr + 1` = base + 12 bytes (struct units)
+- `int* dataPtr + 1` = base + 4 bytes (int units)
+- User fixed the bug and verified 4-byte spacing in output
+
+**7. Memory Address Verification - COMPLETED**
+- Printed actual memory addresses of each member
+- Verified 4-byte spacing: `0x...1c`, `0x...20`, `0x...24`
+- Confirmed pointer arithmetic with `int*` works correctly
+
+### Current Code State
+
+**File:** `cpp/structs/structs.cpp`
+
+```cpp
+#include <iostream>
+
+struct Player {
+    int health;
+    int x;
+    int y;
+};
+
+int main() {
+    Player myPlayer;
+    Player* ptr = &myPlayer;
+
+    ptr->health=100;
+    ptr->x=50;
+    ptr->y=75;
+
+    std::cout << "-- Simple one liners ---" << std::endl;
+    std::cout << "Player HP: " << ptr->health << std::endl;
+    std::cout << "Player X Pos: " << ptr->x << std::endl;
+    std::cout << "Player Y Pos: " << ptr->y << std::endl;
+
+    std::cout << "-- Looping through addresses ---" << std::endl;
+    int* addrPtr = (int*)ptr;
+    for (int i = 0; i < 3; i++) {
+        std::cout << "Offset 0x" << std::hex << (i * 4) << std::dec
+                  << ": " << *(addrPtr + i) << std::endl;
+    }
+
+    std::cout << "-- Looping through addresses with proof of pointer ---" << std::endl;
+    for (int i = 0; i < 3; i++) {
+        std::cout << "Pointer:" << std::hex << (addrPtr + i) << std::endl;
+        std::cout << "Offset 0x" << std::hex << (i * 4) << std::dec
+                  << ": " << *(addrPtr + i) << std::endl;
+    }
+
+    return 0;
+}
+```
+
+**Output:**
+```
+-- Simple one liners ---
+Player HP: 100
+Player X Pos: 50
+Player Y Pos: 75
+-- Looping through addresses ---
+Offset 0x0: 100
+Offset 0x4: 50
+Offset 0x8: 75
+-- Looping through addresses with proof of pointer ---
+Pointer:0x7ffc48229c1c
+Offset 0x0: 100
+Pointer:0x7ffc48229c20
+Offset 0x4: 50
+Pointer:0x7ffc48229c24
+Offset 0x8: 75
+```
+
+### Where We Left Off
+
+**Structs fundamentals PARTIALLY COMPLETE:**
+- ✓ Struct definition
+- ✓ Member access with `.` operator
+- ✓ Pointers to structs with `->` operator
+- ✓ Member offset calculation
+- ✓ Treating structs as raw memory
+- ✓ Pointer arithmetic scaling (Player* vs int*)
+- [ ] `offsetof()` macro (NEXT)
+- [ ] Struct padding and alignment
+- [ ] Nested structs
+- [ ] Arrays of structs
+
+**Game modding connection established:** User understands how to find a struct in memory and access members by offset, which is the foundation of game hacking.
+
+### Next Session Plan
+
+1. **Quick review questions** — Test struct concepts:
+   - "What's the difference between `.` and `->`?"
+   - "Why can't you write `*ptr.health`?"
+   - "If `Player* ptr` is at `0x1000`, what address is `ptr + 2`?" (0x1018, not 0x1008!)
+   - "How do you access the second member of a struct as an int?" (`*(int*)ptr + 1`)
+
+2. **`offsetof()` macro** — Calculate member offsets at compile time
+3. **Struct padding** — Why `sizeof(struct)` might be larger than expected
+4. **Arrays of structs** — Managing multiple Player instances
+
+### Knowledge to Test Next Session
+
+**Struct fundamentals:**
+- "What operator do you use to access struct members through a pointer?"
+- "What's the offset of the third `int` member in a struct?"
+- "What's the difference between `Player* ptr + 1` and `(int*)ptr + 1`?"
+
+**Pointer casting:**
+- "Why do we cast to `int*` before looping through struct members?"
+- "What happens if you use `Player*` arithmetic instead of `int*`?"
+
+**Game modding:**
+- "If you find a Player struct at `0x12340000` and health is at offset `0x00`, how do you modify it?"
+
+---
+
+## Previous Session: 2026-01-08
 
 ### Session Focus
 - Continued pointers — array/pointer relationship
@@ -90,7 +257,7 @@ This file tracks session-by-session progress. See CLAUDE.md for methodology and 
 
 ### Current Code State
 
-**File:** `practice/cpp/pointers/pointers.cpp`
+**File:** `cpp/pointers/pointers.cpp`
 
 ```cpp
 #include <iostream>
@@ -223,6 +390,19 @@ int main() {
 
 ## Recent Milestones
 
+### Structs - IN PROGRESS (2026-01-12)
+- ✓ Struct definition and instantiation
+- ✓ Member access with `.` operator
+- ✓ Pointers to structs with `->` operator
+- ✓ Member offset calculation (0x00, 0x04, 0x08)
+- ✓ Treating structs as raw memory (cast to `int*`)
+- ✓ Pointer arithmetic scaling (Player* vs int*)
+- ✓ Memory address verification
+- [ ] `offsetof()` macro
+- [ ] Struct padding and alignment
+- [ ] Nested structs
+- [ ] Arrays of structs
+
 ### Pointers - FUNDAMENTALS COMPLETE (2026-01-08)
 - ✓ Address-of operator (`&`)
 - ✓ Pointer declaration (`int* ptr`)
@@ -264,9 +444,11 @@ int main() {
 **Phase:** C/C++ Development (Phase 2 of 5)
 
 **Immediate Goals:**
-- [ ] Structs — custom data structures (NEXT)
-- [ ] Pointers to structs and `->` operator
-- [ ] Memory layout and offset calculation within structs
+- [x] Structs — custom data structures (IN PROGRESS - started 2026-01-12)
+- [x] Pointers to structs and `->` operator
+- [x] Memory layout and offset calculation within structs
+- [ ] `offsetof()` macro and struct padding (NEXT)
+- [ ] Arrays of structs
 - [ ] Memory management (heap vs stack)
 
 **Next Phase:** Windows Internals & DLL Development

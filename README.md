@@ -15,9 +15,12 @@ Create tools for debugging and modifying legacy games to work better on modern o
 **Gap:** The shift from "threat hunting" (malware analysis) to "feature hunting" (game reverse engineering), and moving from reading assembly to writing C/C++ code for building user-facing tools.
 
 **Learning Journey:**
-- [COMPLETED] Git workflow mastered (branching, merging, pushing to GitHub)
-- [IN PROGRESS] Currently learning: C/C++ development and building tools
-- [GOAL] Create save system modification for This Means Warp
+- ✅ **COMPLETED:** Git workflow mastered (branching, merging, pushing to GitHub)
+- ✅ **COMPLETED:** C/C++ fundamentals (functions, loops, conditionals, input validation)
+- ✅ **COMPLETED:** Arrays (memory layout, iteration, undefined behaviour)
+- ✅ **COMPLETED:** Pointers (fundamentals, arithmetic, array relationship, type sizes)
+- 🔄 **IN PROGRESS:** Structs (definition, member access, memory layout, offsets)
+- 🎯 **GOAL:** Create save system modification for This Means Warp
 
 ## Why This Matters
 
@@ -64,21 +67,34 @@ Many games, especially indie or older titles, have features that are abandoned b
 /Coding/
 ├── README.md                           # This file
 ├── CLAUDE.md                           # Instructions for Claude Code sessions
+├── PROGRESS.md                         # Session-by-session progress tracker
 ├── git-notes.md                        # Git command reference
 ├── .gitignore                          # Ignore compiled outputs
-└── practice/
-    ├── github_commit_push/             # Git workflow learning exercises
-    │   ├── hello.py
-    │   └── goodbye.py
-    └── cpp/                            # C++ learning exercises
-        ├── programming.md              # C++ learning notes
-        ├── hello-world/
-        │   ├── helloworld.cpp          # First C++ program
-        │   └── readme.md               # Notes on Hello World
-        ├── add-two-numbers/
-        │   └── add-two-numbers.cpp     # Function with parameters/return
-        └── if-number-loop/
-            └── if_greater_smaller.cpp  # If/else and user input
+├── git_commands_lessons/               # Git workflow learning exercises
+│   └── github_commit_push/
+│       ├── hello.py
+│       └── goodbye.py
+└── cpp/                                # C++ learning exercises
+    ├── programming.md                  # C++ learning notes
+    ├── hello-world/
+    │   └── helloworld.cpp              # First C++ program
+    ├── add-two-numbers/
+    │   └── add-two-numbers.cpp         # Function with parameters/return
+    ├── if-number-loop/
+    │   └── if-greater-smaller.cpp      # While loop with input validation
+    ├── do-while-loop/
+    │   └── do-while-loop.cpp           # Do-while loop example
+    ├── for-loop/
+    │   └── for-loop.cpp                # For loop counting examples
+    ├── arrays/
+    │   ├── arrays.cpp                  # Array fundamentals
+    │   ├── arrays-loop.cpp             # Additional array iteration
+    │   └── buffer-overflow-array.cpp   # Undefined behaviour demonstration
+    ├── pointers/
+    │   ├── integer-pointers.cpp        # Pointer fundamentals
+    │   └── character-pointers.cpp      # Char pointer arithmetic
+    └── structs/
+        └── structs.cpp                 # Struct fundamentals and memory layout
 ```
 
 ## Git Workflow Reference
@@ -140,16 +156,25 @@ This is a public learning repository. All AI-generated files should be prefixed 
 
 ## Next Steps
 
+**C/C++ Development (In Progress):**
 - [x] Set up C/C++ development environment
 - [x] Build first "Hello World" C++ program
 - [x] Learn functions with parameters and return values
 - [x] Understand if/else statements and user input
-- [ ] Learn loops (while, for, do-while)
-- [ ] Input validation and error handling
+- [x] Learn loops (while, for, do-while)
+- [x] Input validation and error handling
+- [x] Arrays and memory layout
+- [x] Pointers fundamentals (declaration, dereferencing, arithmetic)
+- [x] Start structs (definition, member access, offsets)
+- [ ] Complete structs (offsetof, padding, arrays of structs)
+- [ ] Memory management (heap vs stack)
+- [ ] Dynamic memory allocation (new/delete)
 - [ ] Build simple file I/O tool
-- [ ] Learn pointers and memory management
-- [ ] Create simple DLL injection tool
-- [ ] Analyze This Means Warp save system
+- [ ] Create simple DLL
+
+**Game Modding (Future):**
+- [ ] DLL injection techniques
+- [ ] Analyse This Means Warp save system
 - [ ] Prototype save system hook
 
 ---
